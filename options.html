@@ -1,14 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-GB">
+
   <head>
-    <link rel="stylesheet" href="button.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="stylesheet.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pop Up</title>
+    <script type="text/javascript" src="options.js"></script>
   </head>
+
   <body>
-    <div id="buttonDiv">
-    </div>
+
     <div>
-      <p>Choose a different background color!</p>
+      <h1>How would you rate yourself?</h1>
+      <label for="profile-setting">Choose:</label>
+      <select name="profile-setting" id="profile-setting">
+        <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="expert">Expert</option>
+      </select>
     </div>
+    
   </body>
-  <script src="options.js"></script>
 </html>
