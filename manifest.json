@@ -1,12 +1,12 @@
 {
     "name": "SecurityExtension",
-    "description": "An extension used to provide the user with a security analysis of a website",
+    "description": "An extension used to provide the user with a security rating of a website",
     "version": "1.0",
     "manifest_version": 3,
     "background": {
     "service_worker": "background.js"
     },
-    "permissions": ["storage", "activeTab", "scripting"],
+    "permissions": ["storage", "activeTab", "scripting", "tabs"],
     "action": {
         "default_popup": "popup.html",
         "default_icon": {
