@@ -1,9 +1,8 @@
-//Begin as a beginner
-let profileSetting = 'beginner';
-
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({ profileSetting });
-  console.log("You are rated as a "+ profileSetting);
+chrome.storage.sync.get(['websiteScore'], function (result) {
+  console.log("Checkpoint1 ");
+  document.getElementById("score").innerHTML = result.websiteScore +"%";
+  console.log("Checkpoint2 ");
+  console.log(result.websiteScore);
+  console.log("Checkpoint3 ");
 });
-
 
