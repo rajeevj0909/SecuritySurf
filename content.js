@@ -14,23 +14,33 @@ if (urlProtocol=="https"){
     score+=5;
 }
 
-
-//Inform user of any vulnerabilities
-let whatToTellThem="";
-if (score<30){
-    whatToTellThem = whatToTellThem.concat("\n This website looks unsafe! Be careful!");
-}
-if (httpsNotUsed){
-    whatToTellThem = whatToTellThem.concat("\n     -This website uses no encryption! Data sent & recieved is in plaintext!");
-}
-
 //Set the score for the site
 let websiteScore = score;
-chrome.storage.sync.set({ websiteScore });
+chrome.storage.sync.set({ "websiteScore": websiteScore });
 console.log("This site is scored: "+ websiteScore);
-  
 
-//If there's something to tell them, SAY IT
-if (whatToTellThem.length){
-    alert(whatToTellThem);
-}
+//Inform user of any vulnerabilities
+let whatToTellThem="\nSecurity Surf\n";
+chrome.storage.sync.get("popupOption", function (result2) {
+    chrome.storage.sync.get("profileSetting", function (result1) {
+        if (result2.popupOption=="yes"){
+            //Unsafe threshold
+            if (score<30){
+                whatToTellThem = whatToTellThem.concat("\n This website looks unsafe! Be careful!");
+            }
+
+            //HTTPS
+            if (httpsNotUsed && (result1.profileSetting=="beginner")){
+                whatToTellThem = whatToTellThem.concat("\n     -It is very easy to see the information you send to this website!");
+            } else if (httpsNotUsed && (result1.profileSetting=="expert")){
+                whatToTellThem = whatToTellThem.concat("\n     -This website uses no encryption! Data sent & recieved is in plaintext!");
+            }
+        }
+        
+        //If there's something to tell them, SAY IT
+        if (whatToTellThem.length>15){
+            alert(whatToTellThem);
+        }
+        
+    });
+});

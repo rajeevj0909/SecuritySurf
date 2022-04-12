@@ -15,6 +15,7 @@ $("#saveOptions").click(function(){
   chrome.storage.sync.set({"profileSetting": expertiseChosen});
   let popupOption= $('#security-popups option:selected').val();
   chrome.storage.sync.set({"popupOption": popupOption});
+  alert("Saved!");
 });
 
 //Button opens about section
