@@ -15,7 +15,7 @@
     <script type="text/javascript" src="options.js" defer></script>
   </head>
 
-  <body>
+  <body style="padding:4%;">
 
     <div>
       <h1 class="text-justify text-center">Security Surf</h1>
@@ -23,20 +23,23 @@
 
       <div>
         <h2 class="text-justify">How would you rate yourself?</h2>
+        <p>If you class yourself as an expert, we will explain more technically.</p>
         <label class="text-justify" for="profile-setting">Choose:</label>
         <select class="form-select" name="profile-setting" id="profile-setting">
           <option value="beginner">Beginner</option>
           <option value="expert">Expert</option>
-        </select>
+        </select><br><br>
 
         <h2 class="text-justify">Do you want to turn on security popups?</h2>
+        <p>Do you want a warning when you visit a dangerous site? Turn on popups!</p>
+        <p>Are we popping up too much? Turn them off!</p>
         <label class="text-justify" for="security-popups">Choose:</label>
         <select class="form-select" name="security-popups" id="security-popups">
           <option value="yes">Yes</option>
           <option value="no">No</option>
         </select>
         <br><br>
-        <button type="button" class="btn btn-success">Save</button>
+        <button id="saveOptions" type="button" class="btn btn-success">Save</button>
       </div>
 
       <br><br>

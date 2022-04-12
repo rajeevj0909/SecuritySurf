@@ -1,14 +1,21 @@
-//Open page with About section closed
+//Open page with About section closed 
 $("#aboutSection").hide();
 
-//Begin as a beginner
-let profileSetting = 'beginner';
-
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({ profileSetting });
-  console.log("You are rated as a "+ profileSetting);
+//When opening options page, restore the options they chose before
+chrome.storage.sync.get("profileSetting", function (result1) {
+  $("#profile-setting").val(result1.profileSetting).change();
+});
+chrome.storage.sync.get("popupOption", function (result2) {
+  $("#security-popups").val(result2.popupOption).change();
 });
 
+//Button saves options to Chrome memory
+$("#saveOptions").click(function(){
+  let expertiseChosen= $('#profile-setting option:selected').val();
+  chrome.storage.sync.set({"profileSetting": expertiseChosen});
+  let popupOption= $('#security-popups option:selected').val();
+  chrome.storage.sync.set({"popupOption": popupOption});
+});
 
 //Button opens about section
 $("#aboutButton").click(function(){
