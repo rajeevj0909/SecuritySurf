@@ -1,4 +1,8 @@
-#popup_window{
+.popup_window{
     width: 450px;
     height:450px;
+}
+
+.hidden{
+    display: none;
 }
