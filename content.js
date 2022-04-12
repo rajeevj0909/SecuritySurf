@@ -6,12 +6,12 @@ let url=window.location.href //URL
 let urlProtocol=url.slice(0,5); //HTTPS or HTTP
 
 //Check if SSL certificate
+let httpsNotUsed=true;
 if (urlProtocol=="https"){
     score+=100;
     httpsNotUsed=false;
 }else if (urlProtocol=="http:"){ 
     score+=5;
-    httpsNotUsed=true;
 }
 
 
