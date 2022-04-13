@@ -5,7 +5,7 @@ let score=0;
 let url=window.location.href //URL
 let urlProtocol=window.location.protocol; //HTTPS or HTTP
 
-//Check if SSL certificate
+//Check for SSL certificate
 function checkSSL(score, urlProtocol){
     let SSLused="N/A";
     if (urlProtocol=="https:"){
@@ -18,17 +18,6 @@ function checkSSL(score, urlProtocol){
     return [score, SSLused];
 }
 [score, SSLused] = checkSSL(score, urlProtocol);
-
-//Listens for popup requests of data
-function sendToPopup(websiteScore,websiteUrl){
-    chrome.runtime.onMessage.addListener(
-        function(request, sender, sendResponse) {
-            sendResponse({score: websiteScore, url: websiteUrl});
-        }
-      );
-}
-sendToPopup(score,url);
-
 
 //Inform user of any vulnerabilities
 let whatToTellThem="\nSecurity Surf\n";
@@ -55,3 +44,13 @@ chrome.storage.sync.get("popupOption", function (result2) {
         
     });
 });
+
+//Listens for popup request of data
+function sendToPopup(websiteScore,websiteUrl,websiteSSL){
+    chrome.runtime.onMessage.addListener(
+        function(request, sender, sendResponse) {
+            sendResponse({score: websiteScore, url: websiteUrl, SSLused: websiteSSL});
+        }
+      );
+}
+sendToPopup(score,url,SSLused);
