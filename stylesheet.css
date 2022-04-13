@@ -1,8 +1,13 @@
 .popup_window{
-    width: 450px;
-    height:450px;
+    width: 600px;
+    height:400px;
 }
 
 .hidden{
     display: none;
+}
+
+.iFramePopup{
+    height: 50%;
+    width: 50%;
 }
