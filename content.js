@@ -21,28 +21,28 @@ function checkSSL(score, urlProtocol){
 
 //Inform user of any vulnerabilities
 let whatToTellThem="\nSecurity Surf\n";
-chrome.storage.sync.get("popupOption", function (result2) {
-    chrome.storage.sync.get("profileSetting", function (result1) {
-        if (result2.popupOption=="yes"){
-            //Unsafe threshold
-            if (score<30){
-                whatToTellThem = whatToTellThem.concat("\n This website looks unsafe! Be careful!");
-            }
+chrome.storage.sync.get("extensionOptions", function(result) {
+    let expertiseChosen= result.extensionOptions.expertiseChosen;
+    let popupOption= result.extensionOptions.popupOption;
 
-            //No SSL Message
-            if (SSLused=="false" && (result1.profileSetting=="beginner")){
-                whatToTellThem = whatToTellThem.concat("\n     -It is very easy to see the information you send to this website!");
-            } else if (SSLused=="false" && (result1.profileSetting=="expert")){
-                whatToTellThem = whatToTellThem.concat("\n     -This website uses no encryption! Data sent & recieved is in plaintext!");
-            }
+    if (popupOption=="yes"){
+        //Unsafe threshold
+        if (score<30){
+            whatToTellThem = whatToTellThem.concat("\n This website looks unsafe! Be careful!");
         }
-        
-        //If there's something to tell them, SAY IT
-        if (whatToTellThem.length>15){
-            alert(whatToTellThem);
+
+        //No SSL Message
+        if (SSLused=="false" && (expertiseChosen=="beginner")){
+            whatToTellThem = whatToTellThem.concat("\n     -It is very easy to see the information you send to this website!");
+        } else if (SSLused=="false" && (expertiseChosen=="expert")){
+            whatToTellThem = whatToTellThem.concat("\n     -This website uses no encryption! Data sent & recieved is in plaintext!");
         }
-        
-    });
+    }
+    
+    //If there's something to tell them, SAY IT
+    if (whatToTellThem.length>15){
+        alert(whatToTellThem);
+    }
 });
 
 //Listens for popup request of data
