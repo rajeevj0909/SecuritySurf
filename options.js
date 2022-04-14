@@ -1,4 +1,3 @@
-chrome.storage.sync.get(null, function (data) { console.info(data) });
 //Open page with About section closed 
 $("#aboutSection").hide();
 
@@ -28,7 +27,7 @@ $("#addwhiteListButton").click(function(){
   $("#addwhiteList").val("");
 });
 //Click Enter on keyboard to add link to List
-var input = document.getElementById("addwhiteList");
+let input = document.getElementById("addwhiteList");
 input.addEventListener("keyup", function(event) {
   if (event.key === 'Enter') {
     event.preventDefault();
@@ -38,7 +37,7 @@ input.addEventListener("keyup", function(event) {
 
 //Remove Button removes link from List
 $(document).on('click', "button[name='linkDiv']", function(e){
-  var entry = $(this).parent(); 
+  let entry = $(this).parent(); 
   entry.remove(); 
 });  
 
@@ -48,7 +47,7 @@ $("#saveOptions").click(function(){
   let popupOption= $('#popupOption option:selected').val();
   let TTLValue= $('#TTLValue option:selected').val();
   //Gets all the urls from the whitelist
-  var whiteList = [];
+  let whiteList = [];
   $('#whiteListLinks li').each(function(){
     whiteList.push($(this).text());
   });

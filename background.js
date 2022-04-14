@@ -1,10 +1,10 @@
-//Initialise storage
+//Initialise storage on first install
 chrome.runtime.onInstalled.addListener(function(details) {
     let expertiseChosen= "beginner";
     let popupOption= "yes";
     let TTLValue= "86400000";//1 Day in Milliseconds
-    TTLValue= "15000";//15 Seconds for testing -----------------------------------
-    var whiteList = ["google.com"];
+    TTLValue= "15000";//15 Seconds for testing <-----------------------------------
+    let whiteList = ["google.com"];
     let extensionOptions={
         "expertiseChosen":expertiseChosen,
         "popupOption":popupOption,

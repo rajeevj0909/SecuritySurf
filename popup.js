@@ -6,8 +6,10 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
   chrome.storage.sync.get("websitesVisited", function(websiteResults) {
     let websiteData=websiteResults.websitesVisited[hostNameOfURL]
     chrome.storage.sync.get("extensionOptions", function(optionsResult) {
-      let expertiseChosen= optionsResult.extensionOptions.expertiseChosen;
-      let popupOption= optionsResult.extensionOptions.popupOption;      
+      let expertiseChosen=optionsResult.extensionOptions.expertiseChosen;
+      let popupOption=optionsResult.extensionOptions.popupOption;
+      let TTLValue=optionsResult.extensionOptions.TTLValue;
+      let whiteList=optionsResult.extensionOptions.whiteList;     
 
       //Issues List
       let issues=[];
@@ -29,6 +31,22 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         $("#issueList").append("<li>"+issues[item]+"</li>");
       }
 
+
+
+      //About Button opens about section
+      $("#saveToWhitelist").click(function(){
+        whiteList.push(hostNameOfURL);
+        let extensionOptions={
+          "expertiseChosen":expertiseChosen,
+          "popupOption":popupOption,
+          "TTLValue":TTLValue,
+          "whiteList":whiteList}
+        chrome.storage.sync.set({"extensionOptions": extensionOptions});
+        alert("Added!")
+        chrome.storage.sync.get(null, function (data) { console.info(data) });
+      });
+
     });
   });
 });
+
