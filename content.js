@@ -3,7 +3,9 @@ let score=0;
 
 //Get website info
 let url=window.location.href //URL
+let urlHost=window.location.hostname //URL Host
 let urlProtocol=window.location.protocol; //HTTPS or HTTP
+
 
 //Check for SSL certificate
 function checkSSL(score, urlProtocol){
@@ -46,11 +48,12 @@ chrome.storage.sync.get("extensionOptions", function(result) {
 });
 
 //Listens for popup request of data
-function sendToPopup(websiteScore,websiteUrl,websiteSSL){
-    chrome.runtime.onMessage.addListener(
-        function(request, sender, sendResponse) {
-            sendResponse({score: websiteScore, url: websiteUrl, SSLused: websiteSSL});
-        }
-      );
+function storeWebsiteInfo(websiteScore,urlHost,websiteSSL){
+    chrome.storage.sync.get("websitesVisited", function(websiteResults){
+        console.log(websiteResults.websitesVisited);
+        let oldResults = websiteResults.websitesVisited;
+        oldResults[urlHost]={"score":websiteScore, "TTL":"DateToday", "websiteSSL":websiteSSL};
+        chrome.storage.sync.set({"websitesVisited": oldResults});
+    });
 }
-sendToPopup(score,url,SSLused);
+storeWebsiteInfo(score,urlHost,SSLused);

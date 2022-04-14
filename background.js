@@ -3,9 +3,10 @@ chrome.runtime.onInstalled.addListener(function() {
     let popupOption= "yes";
     let extensionOptions={"expertiseChosen":expertiseChosen, "popupOption":popupOption}
     chrome.storage.sync.set({"extensionOptions": extensionOptions});
+    chrome.storage.sync.set({"websitesVisited": {}});
     console.log("Default settings have been set.");
 });
 
 //Print all storage & clear storage
-//chrome.storage.sync.get(null, function (data) { console.info(data) });
+chrome.storage.sync.get(null, function (data) { console.info(data) });
 //chrome.storage.sync.clear()
