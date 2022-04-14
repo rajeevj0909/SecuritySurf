@@ -33,12 +33,36 @@
         <h2 class="text-justify">Do you want to turn on security popups?</h2>
         <p>Do you want a warning when you visit a dangerous site? Turn on popups!</p>
         <p>Are we popping up too much? Turn them off!</p>
-        <label class="text-justify" for="securityPopups">Choose:</label>
-        <select class="form-select" name="securityPopups" id="securityPopups">
+        <label class="text-justify" for="popupOption">Choose:</label>
+        <select class="form-select" name="popupOption" id="popupOption">
           <option value="yes">Yes</option>
           <option value="no">No</option>
         </select>
         <br><br>
+
+        <h2 class="text-justify">How long would you like before we recheck the page's security?</h2>
+        <p>This is for the websites that you visit often.</p>
+        <label class="text-justify" for="TTLValue">Choose:</label>
+        <select class="form-select" name="TTLValue" id="TTLValue">
+          <option value="0">Always Check</option>
+          <option value="3600000">1 Hour</option>
+          <option value="21600000">6 Hours</option>
+          <option value="86400000">1 Day</option>
+          <option value="604800000">1 Week</option>
+          <option value="1209600000">2 Weeks</option>
+          <option value="2419200000">4 Weeks</option>
+        </select>
+        <br><br>
+
+        <h2 class="text-justify">Whitelist</h2>
+        <p>Type in the hostnames of websites that you trust:</p>
+        <ul id="whiteListLinks" ></ul>
+        <div class="d-flex flex-row">
+          <label for="addwhiteList">Add hostname:</label>
+          <input type="text" id="addwhiteList" name="addwhiteList">
+          <button type="button" id="addwhiteListButton"class="btn btn-secondary">Add</button>
+        </div><br><br>
+
         <button id="saveOptions" type="button" class="btn btn-success">Save</button>
       </div>
 
