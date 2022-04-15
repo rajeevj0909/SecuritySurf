@@ -9,7 +9,17 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       let expertiseChosen=optionsResult.extensionOptions.expertiseChosen;
       let popupOption=optionsResult.extensionOptions.popupOption;
       let TTLValue=optionsResult.extensionOptions.TTLValue;
-      let whiteList=optionsResult.extensionOptions.whiteList;     
+      let whiteList=optionsResult.extensionOptions.whiteList;
+      
+      //When popup opens, hide all the divs but the first
+      $("#extraInfo").children().hide();
+      $("#websiteIssues").show();
+
+      //When selected box changes, show selected div
+      $("#chooseInfoBox").on('change', function() {
+        $("#extraInfo").children().hide();
+        $("#"+this.value).show();
+      });
 
       //Issues List
       let issues=[];
@@ -19,7 +29,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 
       //Display iFrame for given URL
       certificateURL="https://sitereport.netcraft.com/?url="+urlOfWebsite+"#ssl_table_section";
-      //$("#certiciateInfoIFrame").attr("src",certificateURL);
+      $("#certiciateInfoIFrame").attr("src",certificateURL);
 
       //No SSL Message
       if (websiteData.websiteSSL=="false" && (expertiseChosen=="beginner")){
@@ -31,9 +41,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         $("#issueList").append("<li>"+issues[item]+"</li>");
       }
 
-
-
-      //About Button opens about section
+      //Save button adds site to whitelist
       $("#saveToWhitelist").click(function(){
         whiteList.push(hostNameOfURL);
         let extensionOptions={
@@ -43,7 +51,11 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
           "whiteList":whiteList}
         chrome.storage.sync.set({"extensionOptions": extensionOptions});
         alert("Added!")
-        chrome.storage.sync.get(null, function (data) { console.info(data) });
+      });
+
+      //Save button adds site to whitelist
+      $("#openOptionsButton").click(function(){
+        chrome.tabs.create({ 'url': 'chrome://extensions/?options=' + chrome.runtime.id });
       });
 
     });
