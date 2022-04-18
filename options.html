@@ -19,63 +19,69 @@
 
     <div>
       <h1 class="text-justify text-center">Security Surf</h1>
-      <h1 class="text-justify">Options:</h1>
+      <h2 class="text-justify">Options:</h2>
 
       <div>
-        <h2 class="text-justify">How would you rate yourself?</h2>
-        <p>If you class yourself as an expert, we will explain more technically.</p>
-        <label class="text-justify" for="expertiseChosen">Choose:</label>
-        <select class="form-select" name="expertiseChosen" id="expertiseChosen">
-          <option value="beginner">Beginner</option>
-          <option value="expert">Expert</option>
-        </select><br><br>
+        <div class="rounded bg-primary">
+          <h3 class="text-justify">How would you rate yourself?</h3>
+          <p>If you class yourself as an expert, we will explain more technically.</p>
+          <label class="text-justify" for="expertiseChosen">Choose:</label>
+          <select class="form-select" name="expertiseChosen" id="expertiseChosen">
+            <option value="beginner">Beginner</option>
+            <option value="expert">Expert</option>
+          </select><br><br>
+        </div><br>
 
-        <h2 class="text-justify">Do you want to turn on security popups?</h2>
-        <p>Do you want a warning when you visit a dangerous site? Turn on popups!</p>
-        <p>Are we popping up too much? Turn them off!</p>
-        <label class="text-justify" for="popupOption">Choose:</label>
-        <select class="form-select" name="popupOption" id="popupOption">
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-        <br><br>
+        <div class="rounded bg-primary">
+          <h3 class="text-justify">Do you want to turn on security popups?</h3>
+          <p>Do you want a warning when you visit a dangerous site? Turn on popups!</p>
+          <p>Are we popping up too much? Turn them off!</p>
+          <label class="text-justify" for="popupOption">Choose:</label>
+          <select class="form-select" name="popupOption" id="popupOption">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select><br><br>
+        </div><br>
 
-        <h2 class="text-justify">How long would you like before we recheck the page's security?</h2>
-        <p>This is for the websites that you visit often.</p>
-        <label class="text-justify" for="TTLValue">Choose:</label>
-        <select class="form-select" name="TTLValue" id="TTLValue">
-          <option value="0">Always Check</option>
-          <option value="3600000">1 Hour</option>
-          <option value="21600000">6 Hours</option>
-          <option value="86400000">1 Day</option>
-          <option value="604800000">1 Week</option>
-          <option value="1209600000">2 Weeks</option>
-          <option value="2419200000">4 Weeks</option>
-        </select>
-        <br><br>
+        <div class="rounded bg-primary">
+          <h3 class="text-justify">How long would you like before we recheck the page's security?</h3>
+          <p>This is for the websites that you visit often.</p>
+          <label class="text-justify" for="TTLValue">Choose:</label>
+          <select class="form-select" name="TTLValue" id="TTLValue">
+            <option value="0">Always Check</option>
+            <option value="3600000">1 Hour</option>
+            <option value="21600000">6 Hours</option>
+            <option value="86400000">1 Day</option>
+            <option value="604800000">1 Week</option>
+            <option value="1209600000">2 Weeks</option>
+            <option value="2419200000">4 Weeks</option>
+          </select><br><br>
+        </div><br>
 
-        <h2 class="text-justify">Whitelist</h2>
-        <p>Type in the hostnames of websites that you trust:</p>
-        <ul id="whiteListLinks" ></ul>
-        <div class="d-flex flex-row">
-          <label for="addwhiteList">Add hostname:</label>
-          <input type="text" id="addwhiteList" name="addwhiteList">
-          <button type="button" id="addwhiteListButton"class="btn btn-secondary">Add</button>
-        </div><br><br>
+        <div class="rounded bg-primary">
+          <h3 class="text-justify">Whitelist</h3>
+          <p>Type in the hostnames of websites that you trust:</p>
+          <ul id="whiteListLinks" ></ul>
+          <div class="d-flex flex-row">
+            <label for="addwhiteList">Add hostname:</label>
+            <input type="text" id="addwhiteList" name="addwhiteList">
+            <button type="button" id="addwhiteListButton"class="btn btn-secondary">Add</button>
+        </div><br>
+        </div>
+      </div><br>
 
-        <button id="saveOptions" type="button" class="btn btn-success">Save</button>
-      </div>
-
-      <br><br>
-    </div>
-
+    <button id="saveOptions" type="button" class="btn btn-success">Save</button><br><br>
     <button type="button" id="aboutButton" class="btn btn-info" >About this extension</button><br><br>
-    <div id="aboutSection" class="hidden overflow-auto">
+
+    <div id="aboutSection" class="hidden overflow-auto rounded bg-primary">
       <footer>
         <p>Created by: Rajeev J</p>
-        <p><a href="https://rajeevj.co.uk">rajeevj.co.uk</a></p>
+        <p><a class="text-white" href="https://rajeevj.co.uk">rajeevj.co.uk</a></p>
       </footer>
     </div>
+  </div>
+
+    
     
   </body>
 </html>
