@@ -1,6 +1,6 @@
 .popup_window{
-    width: 600px;
-    height:400px;
+    width: 800px;
+    height:600px;
 }
 
 .hidden{
@@ -8,6 +8,6 @@
 }
 
 .iFramePopup{
-    height: 50%;
-    width: 50%;
+    height: 350px;
+    width: 700px;
 }

@@ -25,13 +25,15 @@
         <h2 id="ratedScore"></h2>
       </div>
 
-      <button id="saveToWhitelist" type="button" class="btn btn-success">Save website to Whitelist</button>
       <button id="openOptionsButton" type="button" class="btn btn-success">Options</button>
+      <button id="saveToWhitelist" type="button" class="btn btn-success">Save website to Whitelist</button>
+      <button id="reportWebsite" type="button" class="btn btn-danger">Report Website</button>
 
       <select class="form-select" name="chooseInfoBox" id="chooseInfoBox">
         <option value="websiteIssues">Issues</option>
         <option value="certInfo">Certification Info</option>
         <option value="WhoIsInfo">WhoIS</option>
+        <option value="trustPilot">Trust Pilot Reviews</option>
       </select>
       <br><br>
     </div>
@@ -40,22 +42,34 @@
 
       <!-- Issues Info -->
       <div id="websiteIssues">
-        <h1>Issues</h1>
+        <h3>Issues</h3>
         <ul id="issueList">
         </ul>
       </div>
 
       <!-- Certificate Info -->
-      <div id="certInfo" class="iFramePopup" >
-        <h1>Certification Information</h1>
-        <iframe id="certiciateInfoIFrame">
+      <div id="certInfo">
+        <h3>Certification Information</h3>
+        <iframe id="certiciateInfoIFrame" loading="lazy" class="iFramePopup embed-responsive embed-responsive-16by9">
           Your browser doesn't support iframes
         </iframe>
       </div>
 
       <!-- Issues Info -->
       <div id="WhoIsInfo">
-        <h1>WhoIs Information</h1>
+        <h3>WhoIs Information</h3>
+        <iframe id="whoIsIFrame" loading="lazy" class="iFramePopup embed-responsive embed-responsive-16by9">
+          Your browser doesn't support iframes
+        </iframe>
+      </div>
+
+      <!-- Issues Info -->
+      <div id="trustPilot">
+        <h3>Trust Pilot Reviews</h3>
+        <p>Take this with a pinch of salt, these are written by anyone!</p>
+        <iframe id="trustPilotIFrame" loading="lazy" class="iFramePopup embed-responsive embed-responsive-16by9">
+          Your browser doesn't support iframes
+        </iframe>
       </div>
 
     </div>
