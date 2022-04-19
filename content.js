@@ -12,15 +12,42 @@ function checkScore(){
         function checkSSL(score, urlProtocol){
             let SSLused="N/A";
             if (urlProtocol=="https:"){
-                score+=100;
+                score+=60;
                 SSLused="true";
             }else if (urlProtocol=="http:"){ 
-                score+=5;
+                score+=0;
                 SSLused="false";
             }
             return [score, SSLused];
         }
         [score, SSLused] = checkSSL(score, urlProtocol);
+
+        //Get all the links the website points to
+        function hyperlinkChecks(urlHost){
+            let allLinks=[]
+            let hostNameMatch=0;
+            let secureSSLMatch=document.links.length;
+            for(var linkIndex=0; linkIndex<document.links.length; linkIndex++) {
+                let link=document.links[linkIndex].href;
+                allLinks.push(link);
+                linkURL=new URL(link);
+                if (linkURL.hostname==urlHost){
+                    hostNameMatch+=1;
+                }if (linkURL.protocol=="http:"){
+                    secureSSLMatch-=1;
+                }
+            }return {
+                "hostNameMatch":hostNameMatch, "secureSSLMatch":secureSSLMatch,"noOfLinks":document.links.length};
+        }
+        hyperlinkInfo = hyperlinkChecks(urlHost);
+        
+        //If most of the other links are within the same domain
+        if ((hyperlinkInfo.hostNameMatch/hyperlinkInfo.noOfLinks)>0.8){
+            score+=10;
+        }//If all the other links are secure links
+        if ((hyperlinkInfo.secureSSLMatch/hyperlinkInfo.noOfLinks)==1){
+            score+=10;
+        }
 
         //Inform user of any vulnerabilities
         let whatToTellThem="\nSecurity Surf\n";
@@ -30,7 +57,7 @@ function checkScore(){
 
             if (popupOption=="yes"){
                 //Unsafe threshold
-                if (score<30){
+                if (score<50){
                     whatToTellThem = whatToTellThem.concat("\n This website looks unsafe! Be careful!");
                 }
 
@@ -39,6 +66,20 @@ function checkScore(){
                     whatToTellThem = whatToTellThem.concat("\n     -It is very easy to see the information you send to this website!");
                 } else if (SSLused=="false" && (expertiseChosen=="expert")){
                     whatToTellThem = whatToTellThem.concat("\n     -This website uses no encryption! Data sent & recieved is in plaintext!");
+                }
+                //Bad Hyperlinks
+                //If most of the other links are within the same domain
+                if ((hyperlinkInfo.hostNameMatch/hyperlinkInfo.noOfLinks)<0.8){
+                    if(expertiseChosen=="beginner"){
+                        whatToTellThem = whatToTellThem.concat("Most of the links on this page go to other random websites");}
+                    if(expertiseChosen=="expert"){
+                        whatToTellThem = whatToTellThem.concat("Less than 80% of hyperlinks go to other domains");}
+                }//If all the other links are secure links
+                if ((hyperlinkInfo.secureSSLMatch/hyperlinkInfo.noOfLinks)!=1){
+                    if(expertiseChosen=="beginner"){
+                        whatToTellThem = whatToTellThem.concat("There are links on this page that aren't secure");}
+                    if(expertiseChosen=="expert"){
+                        whatToTellThem = whatToTellThem.concat("There exists 1 or more hyperlinks on this page which are not HTTPS!");}
                 }
             }
             
@@ -49,14 +90,14 @@ function checkScore(){
         });
 
         //Listens for popup request of data
-        function storeWebsiteInfo(websiteScore,urlHost,websiteSSL){
+        function storeWebsiteInfo(websiteScore,urlHost,websiteSSL,hyperlinkInfo){
             chrome.storage.sync.get("websitesVisited", function(websiteResults){ 
                 let oldResults = websiteResults.websitesVisited;
-                oldResults[urlHost]={"score":websiteScore, "TTL":Date.now() , "websiteSSL":websiteSSL};
+                oldResults[urlHost]={"score":websiteScore, "TTL":Date.now() , "websiteSSL":websiteSSL, "hyperlinkInfo":hyperlinkInfo};
                 chrome.storage.sync.set({"websitesVisited": oldResults});
             });
         }
-        storeWebsiteInfo(score,urlHost,SSLused);
+        storeWebsiteInfo(score,urlHost,SSLused,hyperlinkInfo);
     }
 }
 
@@ -68,5 +109,8 @@ chrome.storage.sync.get(null, function (data) {
     //And if the website visited has not already been score before
     if ((!whiteList.includes(window.location.hostname)) && (!allWebsites.hasOwnProperty(window.location.hostname))){
         checkScore();
-    }
+    }//If a file is being uploaded to this website, run another security check for good measure
+    //document.getElementByType('input').on('change', function(){checkScore();})
 });
+
+

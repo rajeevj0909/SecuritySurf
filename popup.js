@@ -12,6 +12,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       let TTLValue=optionsResult.extensionOptions.TTLValue;
       let whiteList=optionsResult.extensionOptions.whiteList;
       
+      
       //When popup opens, hide all the divs but the first
       $("#extraInfo").children().hide();
       $("#websiteIssues").show();
@@ -28,12 +29,14 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         let issues=[];
         
         //Display score
-        $("#ratedScore").text(websiteData.score +"%");
+        $("#ratedScore").text(websiteData.score +"%")  
+        $("#domainMatch").text(websiteData.hyperlinkInfo.hostNameMatch+"/"+websiteData.hyperlinkInfo.noOfLinks);
+        $("#secureSites").text(websiteData.hyperlinkInfo.secureSSLMatch+"/"+websiteData.hyperlinkInfo.noOfLinks);
 
         //Display iFrames for given URL
         certificateURL="https://sitereport.netcraft.com/?url="+urlOfWebsite+"#ssl_table_section";
         $("#certiciateInfoIFrame").attr("src",certificateURL);
-        whoIsURL="https://sitereport.netcraft.com/?url="+urlOfWebsite+"#network_table";
+        whoIsURL="https://www.whois.com/whois/"+hostNameOfURL;
         $("#whoIsIFrame").attr("src",whoIsURL);
         trustPilotURL="https://www.trustpilot.com/review/"+hostNameOfURL;
         $("#trustPilotIFrame").attr("src",trustPilotURL);
@@ -44,14 +47,31 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         } else if (websiteData.websiteSSL=="false" && (expertiseChosen=="expert")){
           issues.push("This website uses no encryption! Data sent & recieved is in plaintext!");
         }
+        //If most of the other links are within the same domain
+        if ((websiteData.hyperlinkInfo.hostNameMatch/websiteData.hyperlinkInfo.noOfLinks)<0.8){
+          if(expertiseChosen=="beginner"){issues.push("Most of the links on this page go to other random websites");}
+          if(expertiseChosen=="expert"){issues.push("Less than 80% of hyperlinks go to other domains");}
+        }//If all the other links are secure links
+        if ((websiteData.hyperlinkInfo.secureSSLMatch/websiteData.hyperlinkInfo.noOfLinks)!=1){
+          if(expertiseChosen=="beginner"){issues.push("There are links on this page that aren't secure");}
+          if(expertiseChosen=="expert"){issues.push("There exists 1 or more hyperlinks on this page which are not HTTPS!");}
+        } 
+
+
+
         for (item = 0; item < issues.length; item++) {
           $("#issueList").append("<li>"+issues[item]+"</li>");
+        }
+        if(issues.length==0){
+          $("#issueList").append("<h2>No Issues Found!</h2>");
         }
       } else{
         //Unsupported website
         $("body").empty();
         $("body").append('<h1 class="text-justify text-center">Unrecognised Website</h1>');
       }
+
+
       //Save button adds site to whitelist
       $("#saveToWhitelist").click(function(){
         whiteList.push(hostNameOfURL);
@@ -66,12 +86,17 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 
       //Save button adds site to whitelist
       $("#openOptionsButton").click(function(){
-        chrome.tabs.create({ 'url': 'chrome://extensions/?options=' + chrome.runtime.id });
+        chrome.tabs.create({ 'url':'chrome-extension://'+chrome.runtime.id+"/options.html"});
       });
 
       //Save button adds site to whitelist
       $("#reportWebsite").click(function(){
         chrome.tabs.create({ 'url': 'https://www.ncsc.gov.uk/section/about-this-website/report-scam-website'});
+      });
+
+      //Save button adds site to whitelist
+      $("#incognitoMode").click(function(){
+        chrome.windows.create({ "incognito": true, 'url': urlOfWebsite});
       });
 
     });
