@@ -4,7 +4,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
     let popupOption= "yes";
     let TTLValue= "86400000";//1 Day in Milliseconds
             TTLValue= "15000";//15 Seconds for testing <-----------------------------------
-    let whiteList = ["google.com"];
+    let whiteList = ["www.google.com"];
     let extensionOptions={
         "expertiseChosen":expertiseChosen,
         "popupOption":popupOption,
@@ -13,14 +13,21 @@ chrome.runtime.onInstalled.addListener(function(details) {
     chrome.storage.sync.set({"extensionOptions": extensionOptions});
     chrome.storage.sync.set({"websitesVisited": {}});
     console.log("Default settings have been set.");
+    //Refresh all the tabs to collect scores immediately
+    chrome.tabs.query({windowType:'normal'}, function(tabs) {
+        for(var i = 0; i < tabs.length; i++) {
+            chrome.tabs.update(tabs[i].id, {url: tabs[i].url});
+        }
+    }); 
+    //If it's a first install, go to the options page
     if(details.reason == "install"){
-        chrome.tabs.create({ 'url': 'chrome://extensions/?options=' + chrome.runtime.id });
+        chrome.tabs.create({ 'url':'chrome-extension://'+chrome.runtime.id+"/options.html"});
     }
 });
 
 //Cleans up links that have a set TTL 
-//chrome.tabs.onActivated.addListener(function() { //For testing
-chrome.windows.onCreated.addListener(function() {
+chrome.tabs.onActivated.addListener(function() { //For testing
+//chrome.windows.onCreated.addListener(function() {
     chrome.storage.sync.get(null, function (data) {
         let chosenTTL= data.extensionOptions.TTLValue;
         let allWebsites =  data.websitesVisited;

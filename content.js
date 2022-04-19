@@ -7,6 +7,11 @@ function checkScore(){
     let urlHost=window.location.hostname //URL Host
     let urlProtocol=window.location.protocol; //HTTPS or HTTP
 
+    function urlChecker(url){
+        console.log(url);
+    }
+    urlChecker(url)
+
     if((urlProtocol="https:")||(urlProtocol="http:")){
         //Check for SSL certificate
         function checkSSL(score, urlProtocol){
@@ -42,7 +47,7 @@ function checkScore(){
         hyperlinkInfo = hyperlinkChecks(urlHost);
         
         //If most of the other links are within the same domain
-        if ((hyperlinkInfo.hostNameMatch/hyperlinkInfo.noOfLinks)>0.8){
+        if ((hyperlinkInfo.hostNameMatch/hyperlinkInfo.noOfLinks)>0.6){
             score+=10;
         }//If all the other links are secure links
         if ((hyperlinkInfo.secureSSLMatch/hyperlinkInfo.noOfLinks)==1){
@@ -69,17 +74,17 @@ function checkScore(){
                 }
                 //Bad Hyperlinks
                 //If most of the other links are within the same domain
-                if ((hyperlinkInfo.hostNameMatch/hyperlinkInfo.noOfLinks)<0.8){
+                if ((hyperlinkInfo.hostNameMatch/hyperlinkInfo.noOfLinks)<0.6){
                     if(expertiseChosen=="beginner"){
-                        whatToTellThem = whatToTellThem.concat("Most of the links on this page go to other random websites");}
+                        whatToTellThem = whatToTellThem.concat("\n     -Most of the links on this page go to other random websites");}
                     if(expertiseChosen=="expert"){
-                        whatToTellThem = whatToTellThem.concat("Less than 80% of hyperlinks go to other domains");}
+                        whatToTellThem = whatToTellThem.concat("\n     -Less than 80% of hyperlinks go to other domains");}
                 }//If all the other links are secure links
                 if ((hyperlinkInfo.secureSSLMatch/hyperlinkInfo.noOfLinks)!=1){
                     if(expertiseChosen=="beginner"){
-                        whatToTellThem = whatToTellThem.concat("There are links on this page that aren't secure");}
+                        whatToTellThem = whatToTellThem.concat("\n     -There are links on this page that aren't secure");}
                     if(expertiseChosen=="expert"){
-                        whatToTellThem = whatToTellThem.concat("There exists 1 or more hyperlinks on this page which are not HTTPS!");}
+                        whatToTellThem = whatToTellThem.concat("\n     -There exists 1 or more hyperlinks on this page which are not HTTPS!");}
                 }
             }
             
@@ -103,6 +108,7 @@ function checkScore(){
 
 //Checks whitelist and storage before checking score
 chrome.storage.sync.get(null, function (data) {
+                        console.log(data);//For Testin ============================================================
     let allWebsites =  data.websitesVisited;
     let whiteList= data.extensionOptions.whiteList;
     //If the website visited is not on the whitelist

@@ -48,7 +48,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
           issues.push("This website uses no encryption! Data sent & recieved is in plaintext!");
         }
         //If most of the other links are within the same domain
-        if ((websiteData.hyperlinkInfo.hostNameMatch/websiteData.hyperlinkInfo.noOfLinks)<0.8){
+        if ((websiteData.hyperlinkInfo.hostNameMatch/websiteData.hyperlinkInfo.noOfLinks)<0.6){
           if(expertiseChosen=="beginner"){issues.push("Most of the links on this page go to other random websites");}
           if(expertiseChosen=="expert"){issues.push("Less than 80% of hyperlinks go to other domains");}
         }//If all the other links are secure links
