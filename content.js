@@ -8,10 +8,14 @@ function checkScore(){
     let urlProtocol=window.location.protocol; //HTTPS or HTTP
 
     function urlChecker(url){
-        console.log(url);
+        let safeWebsite=false;
+        var regex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi);
+        if (url.match(regex)) {
+            safeWebsite=true;
+        }else{console.log(url);}
+        return (safeWebsite)
     }
-    urlChecker(url)
-
+    
     if((urlProtocol="https:")||(urlProtocol="http:")){
         //Check for SSL certificate
         function checkSSL(score, urlProtocol){
@@ -32,6 +36,7 @@ function checkScore(){
             let allLinks=[]
             let hostNameMatch=0;
             let secureSSLMatch=document.links.length;
+            let falseWebsites=0;
             for(var linkIndex=0; linkIndex<document.links.length; linkIndex++) {
                 let link=document.links[linkIndex].href;
                 allLinks.push(link);
@@ -40,9 +45,11 @@ function checkScore(){
                     hostNameMatch+=1;
                 }if (linkURL.protocol=="http:"){
                     secureSSLMatch-=1;
+                }if (!urlChecker(link)){
+                    falseWebsites+=1;
                 }
             }return {
-                "hostNameMatch":hostNameMatch, "secureSSLMatch":secureSSLMatch,"noOfLinks":document.links.length};
+                "hostNameMatch":hostNameMatch, "secureSSLMatch":secureSSLMatch, "falseWebsites":falseWebsites,"noOfLinks":document.links.length};
         }
         hyperlinkInfo = hyperlinkChecks(urlHost);
         
@@ -52,6 +59,9 @@ function checkScore(){
         }//If all the other links are secure links
         if ((hyperlinkInfo.secureSSLMatch/hyperlinkInfo.noOfLinks)==1){
             score+=10;
+        }//If there are any invalid websites
+        if (hyperlinkInfo.falseWebsites>0){
+            score-=10;
         }
 
         //Inform user of any vulnerabilities
@@ -80,14 +90,19 @@ function checkScore(){
                     if(expertiseChosen=="expert"){
                         whatToTellThem = whatToTellThem.concat("\n     -Less than 80% of hyperlinks go to other domains");}
                 }//If all the other links are secure links
-                if ((hyperlinkInfo.secureSSLMatch/hyperlinkInfo.noOfLinks)!=1){
+                if (((hyperlinkInfo.secureSSLMatch/hyperlinkInfo.noOfLinks)!=1)&&(hyperlinkInfo.noOfLinks!=0)){
                     if(expertiseChosen=="beginner"){
                         whatToTellThem = whatToTellThem.concat("\n     -There are links on this page that aren't secure");}
                     if(expertiseChosen=="expert"){
                         whatToTellThem = whatToTellThem.concat("\n     -There exists 1 or more hyperlinks on this page which are not HTTPS!");}
+                }//If there are any invalid websites
+                if (hyperlinkInfo.falseWebsites>0){
+                    if(expertiseChosen=="beginner"){
+                        whatToTellThem = whatToTellThem.concat("\n     -Some of the links aren't actual websites");}
+                    if(expertiseChosen=="expert"){
+                        whatToTellThem = whatToTellThem.concat("\n     -Hyperlinks on this page do not identify as valid URLs");}
                 }
             }
-            
             //If there's something to tell them, SAY IT
             if (whatToTellThem.length>15){
                 alert(whatToTellThem);
@@ -108,7 +123,7 @@ function checkScore(){
 
 //Checks whitelist and storage before checking score
 chrome.storage.sync.get(null, function (data) {
-                        console.log(data);//For Testin ============================================================
+                        console.log(data);//For Testing ============================================================
     let allWebsites =  data.websitesVisited;
     let whiteList= data.extensionOptions.whiteList;
     //If the website visited is not on the whitelist

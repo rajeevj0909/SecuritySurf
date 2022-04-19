@@ -27,7 +27,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
 
 //Cleans up links that have a set TTL 
 chrome.tabs.onActivated.addListener(function() { //For testing
-//chrome.windows.onCreated.addListener(function() {
+//chrome.windows.onCreated.addListener(function() { //For production
     chrome.storage.sync.get(null, function (data) {
         let chosenTTL= data.extensionOptions.TTLValue;
         let allWebsites =  data.websitesVisited;

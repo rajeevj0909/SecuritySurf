@@ -32,6 +32,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         $("#ratedScore").text(websiteData.score +"%")  
         $("#domainMatch").text(websiteData.hyperlinkInfo.hostNameMatch+"/"+websiteData.hyperlinkInfo.noOfLinks);
         $("#secureSites").text(websiteData.hyperlinkInfo.secureSSLMatch+"/"+websiteData.hyperlinkInfo.noOfLinks);
+        $("#invalidSites").text(websiteData.hyperlinkInfo.falseWebsites);
 
         //Display iFrames for given URL
         certificateURL="https://sitereport.netcraft.com/?url="+urlOfWebsite+"#ssl_table_section";
@@ -52,7 +53,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
           if(expertiseChosen=="beginner"){issues.push("Most of the links on this page go to other random websites");}
           if(expertiseChosen=="expert"){issues.push("Less than 80% of hyperlinks go to other domains");}
         }//If all the other links are secure links
-        if ((websiteData.hyperlinkInfo.secureSSLMatch/websiteData.hyperlinkInfo.noOfLinks)!=1){
+        if (((websiteData.hyperlinkInfo.secureSSLMatch/websiteData.hyperlinkInfo.noOfLinks)!=1)&&(websiteData.hyperlinkInfo.noOfLinks!=0)){
           if(expertiseChosen=="beginner"){issues.push("There are links on this page that aren't secure");}
           if(expertiseChosen=="expert"){issues.push("There exists 1 or more hyperlinks on this page which are not HTTPS!");}
         } 
