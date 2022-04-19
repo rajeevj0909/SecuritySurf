@@ -56,9 +56,11 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         if (((websiteData.hyperlinkInfo.secureSSLMatch/websiteData.hyperlinkInfo.noOfLinks)!=1)&&(websiteData.hyperlinkInfo.noOfLinks!=0)){
           if(expertiseChosen=="beginner"){issues.push("There are links on this page that aren't secure");}
           if(expertiseChosen=="expert"){issues.push("There exists 1 or more hyperlinks on this page which are not HTTPS!");}
+        } //If there are invalid links
+        if (websiteData.hyperlinkInfo.falseWebsites>0){
+          if(expertiseChosen=="beginner"){issues.push("Some of the links aren't actual websites");}
+          if(expertiseChosen=="expert"){issues.push("Hyperlinks on this page do not identify as valid URLs");}
         } 
-
-
 
         for (item = 0; item < issues.length; item++) {
           $("#issueList").append("<li>"+issues[item]+"</li>");
