@@ -1,3 +1,12 @@
+function urlChecker(url){
+  let safeWebsite=false;
+  var regex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi);
+  if (url.match(regex)) {
+      safeWebsite=true;
+  }else{alert("Incorrect Format of URL");}
+  return (safeWebsite)
+}
+
 //Open page with About section closed 
 $("#aboutSection").hide();
 
@@ -20,12 +29,13 @@ chrome.storage.sync.get("extensionOptions", function(result) {
 //Add Button add link to List
 $("#addwhiteListButton").click(function(){
   let linkToAdd=$("#addwhiteList").val();
-  if (linkToAdd){
+  //Checks validitidy of URL
+  if ((linkToAdd)&&(urlChecker(linkToAdd))){
     $("#whiteListLinks").append('<div class="col-lg-12 d-flex flex-row p-1"><li>'+linkToAdd+'</li><button type="button" class="btn btn-danger" name="linkDiv">X</button></div>');
   }
-  
   $("#addwhiteList").val("");
 });
+
 //Click Enter on keyboard to add link to List
 let input = document.getElementById("addwhiteList");
 input.addEventListener("keyup", function(event) {

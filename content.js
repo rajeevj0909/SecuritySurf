@@ -12,8 +12,7 @@ function checkScore(){
         var regex = new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi);
         if (url.match(regex)) {
             safeWebsite=true;
-        }else{console.log(url);}
-        return (safeWebsite)
+        }return (safeWebsite)
     }
     
     if((urlProtocol="https:")||(urlProtocol="http:")){
@@ -123,7 +122,7 @@ function checkScore(){
 
 //Checks whitelist and storage before checking score
 chrome.storage.sync.get(null, function (data) {
-                        console.log(data);//For Testing ============================================================
+                        console.log(data);//For TESTING <-----------------------------------
     let allWebsites =  data.websitesVisited;
     let whiteList= data.extensionOptions.whiteList;
     //If the website visited is not on the whitelist
