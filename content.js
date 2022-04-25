@@ -62,48 +62,54 @@ function checkScore(){
         if (hyperlinkInfo.falseWebsites>0){
             score-=10;
         }
-
         //API Call
-        //import * as keys from './secret.mjs';
-        const googleSafeBrowsingApiKey="";
-        let websiteWithKey="https://safebrowsing.googleapis.com/v4/threatMatches:find?key="+googleSafeBrowsingApiKey;
-        requestBody=
-            {
-                "client": {
-                "clientId":      "securitysurf",
-                "clientVersion": "1.0"
-                },
-                "threatInfo": {
-                "threatTypes":      ["THREAT_TYPE_UNSPECIFIED", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],
-                "platformTypes":    ["ALL_PLATFORMS"],
-                "threatEntryTypes": ["URL"],
-                "threatEntries": [
-                    {"url": url}
-                    //{"url": "http://testsafebrowsing.appspot.com/s/phishing.html"}
-                ]
-                }
+        function SafeBrowsingLookupAPI (url){
+            const googleSafeBrowsingApiKey="";
+            let websiteWithKey="https://safebrowsing.googleapis.com/v4/threatMatches:find?key="+googleSafeBrowsingApiKey;
+            requestBody=
+                {
+                    "client": {
+                    "clientId":      "securitysurf",
+                    "clientVersion": "1.0"
+                    },
+                    "threatInfo": {
+                    "threatTypes":      ["THREAT_TYPE_UNSPECIFIED", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],
+                    "platformTypes":    ["ALL_PLATFORMS"],
+                    "threatEntryTypes": ["URL"],
+                    "threatEntries": [
+                        {"url": url} //http://testsafebrowsing.appspot.com/s/phishing.html
+                    ]
+                    }
+                };
+            const options = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(requestBody)
             };
-        const options = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(requestBody)
-        };
-        fetch(websiteWithKey,options)
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                let badResults = data;
-                if (Object.keys(badResults).length === 0){
-                    alert("Websiste Check Passed");
-                }else{
-                    alert("Website Check Failed");
-                }
-                console.log(badResults);
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
+            fetch(websiteWithKey,options)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    let badResults = data;
+                    if (Object.keys(badResults).length === 0){
+                        return(true);
+                    }else{
+                        console.log(badResults);
+                        return(false);
+                    }
+                    
+                })
+                .catch(function(error) {
+                    return(error);
+                });
+        }
+        let isWebsiteSafe=SafeBrowsingLookupAPI(url);
+        if (isWebsiteSafe){
+            score=0;
+        }else{
+            score+=10;
+        }
         
         //Inform user of any vulnerabilities
         let whatToTellThem="\nSecurity Surf\n";
