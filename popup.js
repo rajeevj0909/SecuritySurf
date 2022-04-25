@@ -82,6 +82,11 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       }
 
       //Save button adds site to whitelist
+      $("#openOptionsButton").click(function(){
+        chrome.tabs.create({ 'url':'chrome-extension://'+chrome.runtime.id+"/options.html"});
+      });
+
+      //Save button adds site to whitelist
       $("#saveToWhitelist").click(function(){
         whiteList.push(hostNameOfURL);
         let extensionOptions={
@@ -94,18 +99,13 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       });
 
       //Save button adds site to whitelist
-      $("#openOptionsButton").click(function(){
-        chrome.tabs.create({ 'url':'chrome-extension://'+chrome.runtime.id+"/options.html"});
+      $("#incognitoMode").click(function(){
+        chrome.windows.create({ "incognito": true, 'url': urlOfWebsite});
       });
-
+      
       //Save button adds site to whitelist
       $("#reportWebsite").click(function(){
         chrome.tabs.create({ 'url': 'https://www.ncsc.gov.uk/section/about-this-website/report-scam-website'});
-      });
-
-      //Save button adds site to whitelist
-      $("#incognitoMode").click(function(){
-        chrome.windows.create({ "incognito": true, 'url': urlOfWebsite});
       });
 
     });

@@ -62,6 +62,8 @@ function checkScore(){
         if (hyperlinkInfo.falseWebsites>0){
             score-=10;
         }
+
+
         //IP2WHOISAPI Call
         function IP2WHOISAPI(url){
             const IP2WhoIsAPIKey="";
@@ -79,8 +81,8 @@ function checkScore(){
                     return(error);
                 });
         }
-        let WhoIsInfo=IP2WHOISAPI(url);
-        console.log(WhoIsInfo)
+        //let WhoIsInfo=IP2WHOISAPI(url);
+        //console.log(WhoIsInfo)
 
         //SafeBrowsingLookupAPI Call
         function SafeBrowsingLookupAPI (url){
@@ -112,6 +114,7 @@ function checkScore(){
                 })
                 .then((data) => {
                     let badResults = data;
+                    //If there are no bad results
                     if (Object.keys(badResults).length === 0){
                         return(true);
                     }else{
@@ -124,8 +127,10 @@ function checkScore(){
                     return(error);
                 });
         }
-        let isWebsiteSafe=SafeBrowsingLookupAPI(url);
-        if (isWebsiteSafe){
+        let isWebsiteSafe=true; //For TESTING <-----------------------------------
+        //let isWebsiteSafe=SafeBrowsingLookupAPI(url);
+        //If the website is not safe, score it zero
+        if (!isWebsiteSafe){
             score=0;
         }else{
             score+=10;
@@ -148,21 +153,19 @@ function checkScore(){
                     whatToTellThem = whatToTellThem.concat("\n     -It is very easy to see the information you send to this website!");
                 } else if (SSLused=="false" && (expertiseChosen=="expert")){
                     whatToTellThem = whatToTellThem.concat("\n     -This website uses no encryption! Data sent & recieved is in plaintext!");
-                }
-                //Bad Hyperlinks
-                //If most of the other links are within the same domain
+                }//If most of the other hyperlinks are within the same domain
                 if ((hyperlinkInfo.hostNameMatch/hyperlinkInfo.noOfLinks)<0.6){
                     if(expertiseChosen=="beginner"){
                         whatToTellThem = whatToTellThem.concat("\n     -Most of the links on this page go to other random websites");}
                     if(expertiseChosen=="expert"){
                         whatToTellThem = whatToTellThem.concat("\n     -Less than 80% of hyperlinks go to other domains");}
-                }//If all the other links are secure links
+                }//If all the other hyperlinks are secure links
                 if (((hyperlinkInfo.secureSSLMatch/hyperlinkInfo.noOfLinks)!=1)&&(hyperlinkInfo.noOfLinks!=0)){
                     if(expertiseChosen=="beginner"){
                         whatToTellThem = whatToTellThem.concat("\n     -There are links on this page that aren't secure");}
                     if(expertiseChosen=="expert"){
                         whatToTellThem = whatToTellThem.concat("\n     -There exists 1 or more hyperlinks on this page which are not HTTPS!");}
-                }//If there are any invalid websites
+                }//If there are any invalid hyperlinks
                 if (hyperlinkInfo.falseWebsites>0){
                     if(expertiseChosen=="beginner"){
                         whatToTellThem = whatToTellThem.concat("\n     -Some of the links aren't actual websites");}
