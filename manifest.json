@@ -3,11 +3,15 @@
     "description": "Raising awareness of dangerous websites as you surf across the internet.",
     "version": "1.1",
     "manifest_version": 3,
-    "permissions": ["storage", "activeTab"],
+    "permissions": ["storage", "activeTab","cookies"],
     "options_page": "options.html",
     "background": {
         "service_worker": "background.js"
     },
+    "host_permissions": [
+        "http://*/*",
+        "https://*/*"
+    ],
     "content_scripts": [
         {
           "matches": [
