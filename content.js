@@ -63,14 +63,6 @@ function checkScore(){
             score-=10;
         }
 
-        //Check for 3rd Party Cookies
-        function getAllCookies(url) {
-            chrome.runtime.sendMessage({url: url}, function(response) {
-                return(response);
-            });
-        }
-        let allCookies=getAllCookies(url);
-        console.log(allCookies);
 
         //IP2WHOISAPI Call
         function IP2WHOISAPI(url){

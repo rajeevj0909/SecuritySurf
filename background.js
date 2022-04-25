@@ -50,19 +50,6 @@ chrome.tabs.onActivated.addListener(function() { //For TESTING <----------------
     });
 });
 
-chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        let text ='Number of cookies=' + cookies.length + '\n';
-        chrome.cookies.getAll({'domain':request.url}, (cookies) => {
-            for (let cookie of cookies){
-                text += 'domain=' + cookie.domain + ',path=' + cookie.path + ',name=' + cookie.name + ',value=' + cookie.value + '\n';
-            }
-            console.log(request.url);
-            console.log(text);
-            sendResponse(text);
-        });
-    }
-);
 //Print all storage & clear storage
 //chrome.storage.sync.get(null, function (data) { console.info(data) });
 //chrome.storage.sync.clear()
