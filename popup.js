@@ -29,6 +29,15 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         let issues=[];
         
         //Display score
+        try{
+          $("#ratedScore").text(websiteData.score +"%")
+        }//If data hasn't been loaded
+        catch(err) {
+          $("body").empty();
+          $("body").append("<h1 class='text-justify text-center'>Refresh the page</h1>")
+          //chrome.tabs.reload(tabs[0].id);
+        }
+        //Present Data
         $("#ratedScore").text(websiteData.score +"%")  
         $("#domainMatch").text(websiteData.hyperlinkInfo.hostNameMatch+"/"+websiteData.hyperlinkInfo.noOfLinks);
         $("#secureSites").text(websiteData.hyperlinkInfo.secureSSLMatch+"/"+websiteData.hyperlinkInfo.noOfLinks);
@@ -43,12 +52,10 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         $("#trustPilotIFrame").attr("src",trustPilotURL);
 
         //No SSL Message
-        if (websiteData.websiteSSL=="false" && (expertiseChosen=="beginner")){
-          issues.push("It is very easy to see the information you send to this website!");
-        } else if (websiteData.websiteSSL=="false" && (expertiseChosen=="expert")){
-          issues.push("This website uses no encryption! Data sent & recieved is in plaintext!");
-        }
-        //If most of the other links are within the same domain
+        if (websiteData.websiteSSL=="false"){
+          if(expertiseChosen=="beginner"){issues.push("It is very easy to see the information you send to this website!");}
+          if(expertiseChosen=="expert"){issues.push("This website uses no encryption! Data sent & recieved is in plaintext!");}
+        }//If most of the other links are within the same domain
         if ((websiteData.hyperlinkInfo.hostNameMatch/websiteData.hyperlinkInfo.noOfLinks)<0.6){
           if(expertiseChosen=="beginner"){issues.push("Most of the links on this page go to other random websites");}
           if(expertiseChosen=="expert"){issues.push("Less than 80% of hyperlinks go to other domains");}
@@ -61,10 +68,10 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
           if(expertiseChosen=="beginner"){issues.push("Some of the links aren't actual websites");}
           if(expertiseChosen=="expert"){issues.push("Hyperlinks on this page do not identify as valid URLs");}
         } 
-
+        //Show all issues
         for (item = 0; item < issues.length; item++) {
           $("#issueList").append("<li>"+issues[item]+"</li>");
-        }
+        }//If not issues
         if(issues.length==0){
           $("#issueList").append("<h2>No Issues Found!</h2>");
         }
@@ -73,7 +80,6 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         $("body").empty();
         $("body").append('<h1 class="text-justify text-center">Unrecognised Website</h1>');
       }
-
 
       //Save button adds site to whitelist
       $("#saveToWhitelist").click(function(){
