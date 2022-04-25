@@ -62,7 +62,27 @@ function checkScore(){
         if (hyperlinkInfo.falseWebsites>0){
             score-=10;
         }
-        //API Call
+        //IP2WHOISAPI Call
+        function IP2WHOISAPI(url){
+            const IP2WhoIsAPIKey="";
+            let websiteWithKey='https://api.ip2whois.com/v2?key='+IP2WhoIsAPIKey+'&domain='+url;
+            fetch(websiteWithKey)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    let WhoIsInfo = data;
+                    return(WhoIsInfo)
+                    
+                })
+                .catch(function(error) {
+                    return(error);
+                });
+        }
+        let WhoIsInfo=IP2WHOISAPI(url);
+        console.log(WhoIsInfo)
+
+        //SafeBrowsingLookupAPI Call
         function SafeBrowsingLookupAPI (url){
             const googleSafeBrowsingApiKey="";
             let websiteWithKey="https://safebrowsing.googleapis.com/v4/threatMatches:find?key="+googleSafeBrowsingApiKey;
