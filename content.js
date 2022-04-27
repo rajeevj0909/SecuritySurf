@@ -137,17 +137,16 @@ function checkScore(){
         }
         
         //Inform user of any vulnerabilities
-        let whatToTellThem="\nSecurity Surf\n";
         chrome.storage.sync.get("extensionOptions", function(result) {
             let expertiseChosen= result.extensionOptions.expertiseChosen;
             let popupOption= result.extensionOptions.popupOption;
-
+            //If user has turned on popups
             if (popupOption=="yes"){
+                let whatToTellThem="\nSecurity Surf\n";
                 //Unsafe threshold
                 if (score<50){
                     whatToTellThem = whatToTellThem.concat("\n This website looks unsafe! Be careful!");
                 }
-
                 //No SSL Message
                 if (SSLused=="false" && (expertiseChosen=="beginner")){
                     whatToTellThem = whatToTellThem.concat("\n     -It is very easy to see the information you send to this website!");
@@ -172,10 +171,10 @@ function checkScore(){
                     if(expertiseChosen=="expert"){
                         whatToTellThem = whatToTellThem.concat("\n     -Hyperlinks on this page do not identify as valid URLs");}
                 }
-            }
-            //If there's something to tell them, SAY IT
-            if (whatToTellThem.length>15){
-                alert(whatToTellThem);
+                //If there's something to tell them, SAY IT
+                if (whatToTellThem.length>15){
+                    alert(whatToTellThem);
+                }
             }
         });
 
