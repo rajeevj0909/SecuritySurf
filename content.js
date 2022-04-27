@@ -63,27 +63,6 @@ function checkScore(){
             score-=10;
         }
 
-
-        //IP2WHOISAPI Call
-        function IP2WHOISAPI(url){
-            const IP2WhoIsAPIKey="";
-            let websiteWithKey='https://api.ip2whois.com/v2?key='+IP2WhoIsAPIKey+'&domain='+url;
-            fetch(websiteWithKey)
-                .then((response) => {
-                    return response.json();
-                })
-                .then((data) => {
-                    let WhoIsInfo = data;
-                    return(WhoIsInfo)
-                    
-                })
-                .catch(function(error) {
-                    return(error);
-                });
-        }
-        //let WhoIsInfo=IP2WHOISAPI(url);
-        //console.log(WhoIsInfo)
-
         //SafeBrowsingLookupAPI Call
         function SafeBrowsingLookupAPI (url){
             const googleSafeBrowsingApiKey="";
@@ -92,7 +71,7 @@ function checkScore(){
                 {
                     "client": {
                     "clientId":      "securitysurf",
-                    "clientVersion": "1.0"
+                    "clientVersion": "1.1"
                     },
                     "threatInfo": {
                     "threatTypes":      ["THREAT_TYPE_UNSPECIFIED", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],

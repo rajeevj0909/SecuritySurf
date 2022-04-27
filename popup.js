@@ -3,6 +3,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
   let urlOfWebsite=tabs[0].url;
   let hostNameOfURL= (new URL(urlOfWebsite)).hostname;
   let protocolOfURL= (new URL(urlOfWebsite)).protocol;
+  let domainOfURL=psl.parse(hostNameOfURL).domain;
 
   chrome.storage.sync.get(null, function(data) {
     let websiteData=data.websitesVisited[hostNameOfURL]
@@ -21,6 +22,53 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       $("#extraInfo").children().hide();
       $("#"+this.value).show();
     });
+
+
+    //Run more checks
+
+    //IPGeolocationAPI Call
+    async function IPGeolocationAPI(url){
+      let locationData = new Promise ((resolve, reject) => {
+        let websiteWithKey='http://ip-api.com/json/'+url;
+        fetch(websiteWithKey)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                let locationData = data;
+                resolve(locationData.country)
+                
+            })
+            .catch(function(error) {
+                reject(error);
+            });
+      })
+      const location = await locationData;
+      console.log(location);
+      $("#websiteLocation").text(location);
+    }
+    IPGeolocationAPI(hostNameOfURL);
+
+    //URLScanIOAPI Call
+    async function URLScanIOAPI(url){
+      let WHOISdata = new Promise ((resolve, reject) => {
+      let websiteWithKey='https://urlscan.io/api/v1/search/?q='+url;
+      fetch(websiteWithKey)
+          .then((response) => {
+              return response.json();
+          })
+          .then((data) => {
+              resolve(data.results[0].page);
+              
+          })
+          .catch(function(error) {
+              reject(error);
+          });
+      })
+      const pageData = await WHOISdata;
+      $("#websiteServer").text(pageData.server);
+    }
+    URLScanIOAPI(domainOfURL);
 
     //Only run if website is recognisable
     if((protocolOfURL=="https:")||(protocolOfURL=="http:")){
