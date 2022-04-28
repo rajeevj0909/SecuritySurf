@@ -3,7 +3,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
     let expertiseChosen= "beginner";
     let popupOption= "yes";
     let TTLValue= "86400000";//1 Day in Milliseconds
-            TTLValue= "15000";//15 Seconds for TESTING <-----------------------------------
+            TTLValue= "120000";//120 Seconds for TESTING <-----------------------------------
     let whiteList = ["www.google.com"];
     let extensionOptions={
         "expertiseChosen":expertiseChosen,

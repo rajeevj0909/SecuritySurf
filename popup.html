@@ -18,17 +18,20 @@
     <script type="text/javascript" src="popup.js" defer></script>
   </head>
 
-  <body class="popup_window" style="padding:3%;">
+  <body class="popup_window" style="padding:2%;">
 
     <div id="mainBody">
-      <h1 class="text-justify text-center">Security Surf</h1>
       <!-- Overall Rating -->
       <div class="col-lg-12 d-flex flex-row statsBox">
-        <h2>Rating:</h2><h2 id="ratedScore"></h2>
+        <img src="/assets/SecuritySurfLogo128.png" alt="Extension Logo" width="80" height="60">
+        <h1 class="text-justify text-center">Security Surf</h1><br><br>
+        <h2>Rating:</h2><h2 id="ratedScore"></h2>        
+      </div>
+      <div class="col-lg-12 d-flex flex-row statsBox">
         <p><b>Domain Matches:</b></p><p id="domainMatch"></p>
         <p><b>Secure Hyperlinks:</b></p><p id="secureSites"></p>
         <p><b>Invalid Hyperlinks:</b></p><p id="invalidSites"></p>
-        <p><b>IP Address:</b></p><p id="ipUsed"></p>
+        <p><b>Network Host:</b></p><p id="asName"></p>
       </div>
 
       <button id="openOptionsButton" type="button" class="btn btn-primary">Options</button>
@@ -42,18 +45,46 @@
         <option value="WhoIsInfo">Website Details</option>
         <option value="trustPilot">Trust Pilot Reviews</option>
       </select>
+      <button id="helpButton" type="button" class="btn btn-warning">Help</button>
       <br><br>
     </div>
 
     <div id="extraInfo">
 
-      <!-- Issues Info -->
-      <div id="websiteIssues">
-        <h3>Issues</h3>
-        <ul id="issueList">
-        </ul>
-      </div>
+      <!-- Main Page Container -->
+      <div id="mainPageBox">
+        <!-- Issues Info -->
+        <div id="websiteIssues">
+          <h3>Issues</h3>
+          <ul id="issueList">
+          </ul>
+        </div>
+        <div id="explainPopup" class="hidden">
+          <h1>Security Surf Explained</h1>
+          <ul>
+            <li>Rating: This is a percentage how safe we find the website based on lots of factors</li>
+            <li>Statistics</li>
+            <ul>
+              <li>Domain Matches: These are how many hyperlinks found on the website which lead to another website from the same domain</li>
+              <li>Secure Hyperlinks: These are how many hyperlinks found on the website which are secured by SSL</li>
+              <li>Invalid Hyperlinks: These are how many hyperlinks found on the website which are not recognised URLs</li>
+              <li>Network Host: This is the AS (Autonomous System) which owns this domain</li>
+            </ul>
+            <li>Buttons</li>
+            <ul>
+              <li>Options: Takes you to the options page to change your settings</li>
+              <li>Save to whitelist: If you trust the website, you can save us scanning it</li>
+              <li>Hide Tracking: Opens website in Incognito Mode where history, cookies and form data isn't saved</li>
+              <li>Report Website: Opens a form to report the website to official authorities</li>
+            </ul>
+            <li>Dropdown: Find out more details about the website</li>
+            <li>Issues: These are some of the things we noticed when we scanned the website.</li>
+            
+          </ul>
 
+        </div>
+      </div>
+      
       <!-- Certificate Info -->
       <div id="certInfo">
         <h3>Connection Details</h3>
@@ -63,10 +94,33 @@
           Your browser doesn't support iframes
         </iframe><br><br>
         <ul id="learnAboutCertificates" class="hidden">
-          <li>First Item</li>
-          <li>Second Item</li>
-          <li>Third Item</li>
-        </ul>
+          <li>If the website has a certificate, Chrome will show a lock in the top left.</li>
+          <ul>
+            <li>This means the website has a secure connection between you and the website</li>
+            <li>This helps the website with authentication, it knows you are who you say you are</li>
+            <li>It also means anyone on the internet can't see the data that is sent or received from this device</li>
+            <li>Certificates are signed by trusted authorities</li>
+          </ul>
+          <li>If a website has no certificate, Chrome will say 'Not secure' in the top left.</li>
+          <ul>
+            <li>This website has weak privacy</li>
+            <li>Anyone on the network can see the data you send and receive from it</li>
+          </ul>
+          <li>If it says Certificate Check: Self Signed Certificate</li>
+          <ul>
+            <li>This website has been given a certificate by itself (instead of a trusted authority)</li>
+            <li>There can be multiple reasons for this, but in general proceed with caution</li>
+            <li>Luckily Chrome warns you of these websites before you reach the page</li>
+          </ul>
+          <li>Want to learn more?</li>
+          <ul>
+            <li><a target="_blank" href="https://www.youtube.com/results?search_query=Website+Certificates" >
+              YouTube Explanations</a></li>
+            <li><a target="_blank" href="https://www.websitebuilderexpert.com/building-websites/what-is-an-ssl-certificate/" >
+              What Is an SSL Certificate? A Beginners Guide</a></li>
+            <li><a target="_blank" href="http://www.steves-internet-guide.com/ssl-certificates-explained/" >
+              SSL and SSL Certificates Explained For Beginners</a></li>
+          </ul>
       </div>
 
       <!-- WHOIS Info -->
@@ -78,9 +132,28 @@
           Your browser doesn't support iframes
         </iframe><br><br>
         <ul id="learnAboutWHOIS" class="hidden">
-          <li>First Item</li>
-          <li>Second Item</li>
-          <li>Third Item</li>
+          <li>WHOIS Information</li>
+          <ul>
+            <li>WHOIS is lots of information about a single domain</li>
+            <li>A domain is the name of the website, like 'google.com' or 'bbc.co.uk'</li>
+            <li>Includes details like the domain owner, the date it was registered and information about the servers</li>
+            <li>Sometimes information about the domain can be hidden from the public eye</li>
+          </ul>
+          <li>Why are WHOIS records kept:</li>
+          <ul>
+            <li>If an unsafe website is reported, authorities can see who owns the domain and remove them</li>
+            <li>If a website is registered recently, e.g. within the last year, it may be suspicous</li>
+            <li>If a website is posing to be from one country but is hosted somewhere completely different, this may also be suspicous</li>
+          </ul>
+          <li>Want to learn more?</li>
+          <ul>
+            <li><a target="_blank" href="https://www.youtube.com/results?search_query=WHOIS+Lookup" >
+              YouTube Explanations</a></li>
+            <li><a target="_blank" href="https://who.is/" >
+              Try looking up a website yourself!</a></li>
+            <li><a target="_blank" href="https://www.websitebuilderexpert.com/building-websites/what-is-an-ssl-certificate/" >
+              What is Whois Information and why is it Valuable?</a></li>
+          </ul>
         </ul>
       </div>
 
@@ -93,9 +166,27 @@
           Your browser doesn't support iframes
         </iframe><br><br>
         <ul id="learnAboutTrustPilot" class="hidden">
-          <li>First Item</li>
-          <li>Second Item</li>
-          <li>Third Item</li>
+          <li>What is Trust Pilot</li>
+          <ul>
+            <li>Trust Pilot is consumer review website</li>
+            <li>Customers review businesses to help other customers decide wether to use the service</li>
+          </ul>
+          <li>How does it help</li>
+          <ul>
+            <li>Use this website when visiting websites that offer services</li>
+            <li>See how popular the website/business is</li>
+            <li>See how good the feedback is from the public</li>
+            <li><i>Remember these are written by anyone so don't believe everything you see</i></li>
+          </ul>
+          <li>Want to learn more?</li>
+          <ul>
+            <li><a target="_blank" href="https://www.youtube.com/results?search_query=Trustpilot" >
+              YouTube Explanations</a></li>
+            <li><a target="_blank" href="https://uk.trustpilot.com/" >
+              Try the website out yourself!</a></li>
+            <li><a target="_blank" href="https://www.websitebuilderexpert.com/building-websites/what-is-an-ssl-certificate/" >
+              What Is Trustpilot And Can You Trust Their Reviews?</a></li>
+          </ul>
         </ul>
       </div>
 

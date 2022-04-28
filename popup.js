@@ -15,16 +15,17 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     
     //When popup opens, hide all the divs but the first
     $("#extraInfo").children().hide();
-    $("#websiteIssues").show();
+    $("#mainPageBox").show();
 
     //When selected box changes, show selected div
     $("#chooseInfoBox").on('change', function() {
       $("#extraInfo").children().hide();
-      $("#"+this.value).show();
+      $("#"+this.value).show(1000);
+      if (this.value=="websiteIssues"){
+        $("#mainPageBox").show(500);
+        $("#explainPopup").hide();
+      }
     });
-
-
-    //Run more checks
 
     //IPGeolocationAPI Call
     async function IPGeolocationAPI(url){
@@ -69,7 +70,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
           });
       })
       let pageData = await WHOISdata;
-      $("#ipUsed").text(pageData.ip);
+      $("#asName").text(pageData.asnname);
     }
     URLScanIOAPI(domainOfURL);
 
@@ -160,6 +161,18 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     //Save button adds site to whitelist
     $("#reportWebsite").click(function(){
       chrome.tabs.create({ 'url': 'https://www.ncsc.gov.uk/section/about-this-website/report-scam-website'});
+    });
+
+    //Help button explains extension functions
+    $("#helpButton").click(function(){
+      if ($("#chooseInfoBox").find(":selected").val()=="websiteIssues"){
+        $("#websiteIssues").toggle(500);
+        $("#explainPopup").toggle(500);
+      }else{
+        $("#chooseInfoBox").val("websiteIssues").change();
+        $("#websiteIssues").hide();
+        $("#explainPopup").show(1000);
+      }     
     });
 
     //Learn more button hides the iFrame and gives them a lesson in cyber security
