@@ -162,7 +162,20 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       chrome.tabs.create({ 'url': 'https://www.ncsc.gov.uk/section/about-this-website/report-scam-website'});
     });
 
-    
+    //Learn more button hides the iFrame and gives them a lesson in cyber security
+    $("#learnAboutCertificatesButton").click(function(){
+      $("#certInfo iframe").toggle(500);
+      $("#learnAboutCertificates").toggle(500);
+    });
+    $("#learnAboutWHOISButton").click(function(){
+      $("#WhoIsInfo iframe").toggle(500);
+      $("#learnAboutWHOIS").toggle(500);
+    });
+    $("#learnAboutTrustPilotButton").click(function(){
+      $("#trustPilot iframe").toggle(500);
+      $("#learnAboutTrustPilot").toggle(500);
+    });
+
   });
 });
 

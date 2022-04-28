@@ -38,8 +38,8 @@
 
       <select class="form-select" name="chooseInfoBox" id="chooseInfoBox">
         <option value="websiteIssues">Issues</option>
-        <option value="certInfo">Certification Info</option>
-        <option value="WhoIsInfo">WhoIS</option>
+        <option value="certInfo">Connection Details</option>
+        <option value="WhoIsInfo">Website Details</option>
         <option value="trustPilot">Trust Pilot Reviews</option>
       </select>
       <br><br>
@@ -56,30 +56,47 @@
 
       <!-- Certificate Info -->
       <div id="certInfo">
-        <h3>Certification Information</h3>
-        <button id="######" type="button" class="btn btn-info">Learn more</button>
+        <h3>Connection Details</h3>
+        <p>Certification information, find out if your connection encrypted using SSL and more.</p>
+        <button id="learnAboutCertificatesButton" type="button" class="btn btn-info">Learn more</button>
         <iframe id="certiciateInfoIFrame" loading="lazy" class="iFramePopup embed-responsive embed-responsive-16by9">
           Your browser doesn't support iframes
-        </iframe>
+        </iframe><br><br>
+        <ul id="learnAboutCertificates" class="hidden">
+          <li>First Item</li>
+          <li>Second Item</li>
+          <li>Third Item</li>
+        </ul>
       </div>
 
-      <!-- Issues Info -->
+      <!-- WHOIS Info -->
       <div id="WhoIsInfo">
-        <h3>WhoIs Information</h3>
-        <button id="######" type="button" class="btn btn-info">Learn more</button>
+        <h3>Website Details</h3>
+        <p>WHOIS information, take a look the website's hosting information and more.</p>
+        <button id="learnAboutWHOISButton" type="button" class="btn btn-info">Learn more</button>
         <iframe id="whoIsIFrame" loading="lazy" class="iFramePopup embed-responsive embed-responsive-16by9">
           Your browser doesn't support iframes
-        </iframe>
+        </iframe><br><br>
+        <ul id="learnAboutWHOIS" class="hidden">
+          <li>First Item</li>
+          <li>Second Item</li>
+          <li>Third Item</li>
+        </ul>
       </div>
 
-      <!-- Issues Info -->
+      <!-- Trust Pilot Info -->
       <div id="trustPilot">
         <h3>Trust Pilot Reviews</h3>
-        <p>Take this with a pinch of salt, these are written by anyone!</p>
-        <button id="######" type="button" class="btn btn-info">Learn more</button>
+        <p>Take this with a pinch of salt, these opinions are written by anyone!</p>
+        <button id="learnAboutTrustPilotButton" type="button" class="btn btn-info">Learn more</button>
         <iframe id="trustPilotIFrame" loading="lazy" class="iFramePopup embed-responsive embed-responsive-16by9">
           Your browser doesn't support iframes
-        </iframe>
+        </iframe><br><br>
+        <ul id="learnAboutTrustPilot" class="hidden">
+          <li>First Item</li>
+          <li>Second Item</li>
+          <li>Third Item</li>
+        </ul>
       </div>
 
     </div>
