@@ -3,7 +3,6 @@ chrome.runtime.onInstalled.addListener(function(details) {
     let expertiseChosen= "beginner";
     let popupOption= "yes";
     let TTLValue= "86400000";//1 Day in Milliseconds
-            TTLValue= "120000";//120 Seconds for TESTING <-----------------------------------
     let whiteList = ["www.google.com"];
     let extensionOptions={
         "expertiseChosen":expertiseChosen,
@@ -26,8 +25,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
 });
 
 //Cleans up links that have a set TTL 
-chrome.tabs.onActivated.addListener(function() { //For TESTING <-----------------------------------
-//chrome.windows.onCreated.addListener(function() { //For production
+chrome.windows.onCreated.addListener(function() { //For production
     chrome.storage.sync.get(null, function (data) {
         let chosenTTL= data.extensionOptions.TTLValue;
         let allWebsites =  data.websitesVisited;

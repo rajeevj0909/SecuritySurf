@@ -56,12 +56,37 @@ function checkScore(){
         if ((hyperlinkInfo.hostNameMatch/hyperlinkInfo.noOfLinks)>0.6){
             score+=10;
         }//If all the other links are secure links
-        if ((hyperlinkInfo.secureSSLMatch/hyperlinkInfo.noOfLinks)==1){
+        if ((hyperlinkInfo.secureSSLMatch/hyperlinkInfo.noOfLinks)>0.6){
             score+=10;
         }//If there are any invalid websites
-        if (hyperlinkInfo.falseWebsites>0){
+        if (hyperlinkInfo.falseWebsites>5){
             score-=10;
         }
+
+        //Counts suspicious iFrames
+        let suspiciousIframes=0
+        setInterval(function(){
+            //Gets all iframes on page
+            let iFrames = document.getElementsByTagName("iFrame");
+            let countIframes=0;
+            for (let i = 0; i < iFrames.length; i++) {
+                let styleAttribute=iFrames[i].getAttribute("style");
+                if(styleAttribute){
+                    let countImportant=(styleAttribute.match(/!important;/g) || []).length;
+                    //Counts how many "!important;" values are in the css of the iframe
+                    if (countImportant>3){
+                        countIframes+=1;//If there are more than 3, sign that it's a dangerous popup
+                    }
+                }
+            } //Set max value globally
+            if (suspiciousIframes<countIframes){
+                suspiciousIframes=countIframes;
+            }//If there are more than 1 suspcious iframe, set the score to 0
+            if (suspiciousIframes>1){
+                score=0;
+                storeWebsiteInfo(score,urlHost,SSLused,hyperlinkInfo,isWebsiteSafe,suspiciousIframes);
+            }
+        }, 60000);//Checks every 60 seconds if IFrames appear
 
         //SafeBrowsingLookupAPI Call
         function SafeBrowsingLookupAPI (url){
@@ -95,8 +120,10 @@ function checkScore(){
                     let badResults = data;
                     //If there are no bad results
                     if (Object.keys(badResults).length === 0){
+                        storeWebsiteInfo(score,urlHost,SSLused,hyperlinkInfo,true,suspiciousIframes);
                         return(true);
                     }else{
+                        storeWebsiteInfo(0,urlHost,SSLused,hyperlinkInfo,false,suspiciousIframes);
                         return(false);
                     }
                     
@@ -105,14 +132,8 @@ function checkScore(){
                     return(error);
                 });
         }
-        let isWebsiteSafe=true; //For TESTING <-----------------------------------
-        //let isWebsiteSafe=SafeBrowsingLookupAPI(url);
-        //If the website is not safe, score it zero
-        if (!isWebsiteSafe){
-            score=0;
-        }else{
-            score+=10;
-        }
+        let isWebsiteSafe=true; //Default value
+        isWebsiteSafe=SafeBrowsingLookupAPI(url);
         
         //Inform user of any vulnerabilities
         chrome.storage.sync.get("extensionOptions", function(result) {
@@ -135,15 +156,15 @@ function checkScore(){
                     if(expertiseChosen=="beginner"){
                         whatToTellThem = whatToTellThem.concat("\n     -Most of the links on this page go to other random websites");}
                     if(expertiseChosen=="expert"){
-                        whatToTellThem = whatToTellThem.concat("\n     -Less than 80% of hyperlinks go to other domains");}
-                }//If all the other hyperlinks are secure links
-                if (((hyperlinkInfo.secureSSLMatch/hyperlinkInfo.noOfLinks)!=1)&&(hyperlinkInfo.noOfLinks!=0)){
+                        whatToTellThem = whatToTellThem.concat("\n     -Less than 60% of hyperlinks go to other domains");}
+                }//If some of the other hyperlinks are secure links
+                if (((hyperlinkInfo.secureSSLMatch/hyperlinkInfo.noOfLinks)<0.8)&&(hyperlinkInfo.noOfLinks!=0)){
                     if(expertiseChosen=="beginner"){
                         whatToTellThem = whatToTellThem.concat("\n     -There are links on this page that aren't secure");}
                     if(expertiseChosen=="expert"){
                         whatToTellThem = whatToTellThem.concat("\n     -There exists 1 or more hyperlinks on this page which are not HTTPS!");}
                 }//If there are any invalid hyperlinks
-                if (hyperlinkInfo.falseWebsites>0){
+                if (hyperlinkInfo.falseWebsites>5){
                     if(expertiseChosen=="beginner"){
                         whatToTellThem = whatToTellThem.concat("\n     -Some of the links aren't actual websites");}
                     if(expertiseChosen=="expert"){
@@ -157,20 +178,19 @@ function checkScore(){
         });
 
         //Listens for popup request of data
-        function storeWebsiteInfo(websiteScore,urlHost,websiteSSL,hyperlinkInfo){
+        function storeWebsiteInfo(websiteScore,urlHost,websiteSSL,hyperlinkInfo,isWebsiteSafe,suspiciousIframes){
             chrome.storage.sync.get("websitesVisited", function(websiteResults){ 
                 let oldResults = websiteResults.websitesVisited;
-                oldResults[urlHost]={"score":websiteScore, "TTL":Date.now() , "websiteSSL":websiteSSL, "hyperlinkInfo":hyperlinkInfo};
+                oldResults[urlHost]={"score":websiteScore, "TTL":Date.now() , "websiteSSL":websiteSSL, "hyperlinkInfo":hyperlinkInfo, "isWebsiteSafe":isWebsiteSafe, "suspiciousIframes":suspiciousIframes};
                 chrome.storage.sync.set({"websitesVisited": oldResults});
             });
         }
-        storeWebsiteInfo(score,urlHost,SSLused,hyperlinkInfo);
+        storeWebsiteInfo(score,urlHost,SSLused,hyperlinkInfo,isWebsiteSafe,suspiciousIframes);
     }
 }
 
 //Checks whitelist and storage before checking score
 chrome.storage.sync.get(null, function (data) {
-                        console.log(data);//For TESTING <-----------------------------------
     let allWebsites =  data.websitesVisited;
     let whiteList= data.extensionOptions.whiteList;
     //If the website visited is not on the whitelist

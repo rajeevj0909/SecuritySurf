@@ -52,6 +52,10 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       if(currentCountry!=location.countryCode){
         $("#issueList").append("<li>This website is being delivered from another country:  <b>" +countries[location.countryCode]+"</b></li>");
       }
+      //If no issues
+      if($('#issueList li').length == 0){
+        $("#issueList").append("<h2>No Issues Found!</h2>");
+      }
     }
     IPGeolocationAPI(hostNameOfURL);
 
@@ -75,14 +79,6 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       $("#asName").text(pageData.asnname);
     }
     URLScanIOAPI(domainOfURL);
-
-    async function showNoIssues(){
-      //If no issues
-      if($('#issueList li').length == 0){
-        $("#issueList").append("<h2>No Issues Found!</h2>");
-      }
-    }
-    //showNoIssues();
 
     //Only run if website is recognisable
     if((protocolOfURL=="https:")||(protocolOfURL=="http:")){
@@ -118,16 +114,25 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       }//If most of the other links are within the same domain
       if ((websiteData.hyperlinkInfo.hostNameMatch/websiteData.hyperlinkInfo.noOfLinks)<0.6){
         if(expertiseChosen=="beginner"){issues.push("Most of the links on this page go to other random websites");}
-        if(expertiseChosen=="expert"){issues.push("Less than 80% of hyperlinks go to other domains");}
-      }//If all the other links are secure links
-      if (((websiteData.hyperlinkInfo.secureSSLMatch/websiteData.hyperlinkInfo.noOfLinks)!=1)&&(websiteData.hyperlinkInfo.noOfLinks!=0)){
+        if(expertiseChosen=="expert"){issues.push("Less than 60% of hyperlinks go to other domains");}
+      }//If some of the other links are secure links
+      if (((websiteData.hyperlinkInfo.secureSSLMatch/websiteData.hyperlinkInfo.noOfLinks)<0.8)&&(websiteData.hyperlinkInfo.noOfLinks!=0)){
         if(expertiseChosen=="beginner"){issues.push("There are links on this page that aren't secure");}
         if(expertiseChosen=="expert"){issues.push("There exists 1 or more hyperlinks on this page which are not HTTPS!");}
       } //If there are invalid links
       if (websiteData.hyperlinkInfo.falseWebsites>0){
         if(expertiseChosen=="beginner"){issues.push("Some of the links aren't actual websites");}
         if(expertiseChosen=="expert"){issues.push("Hyperlinks on this page do not identify as valid URLs");}
-      } 
+      }//Google Safe Browsing Lookup API
+      if (!websiteData.isWebsiteSafe){
+        if(expertiseChosen=="beginner"){issues.push("Google Safe Browsing says this website is dangerous to use!!");}
+        if(expertiseChosen=="expert"){issues.push("Google Safe Browsing Lookup API flagged this website!!");}
+      }//If there are suspicious Iframes
+      if (websiteData.suspiciousIframes){
+        if(expertiseChosen=="beginner"){issues.push("This website has suspicous content on it!");}
+        if(expertiseChosen=="expert"){issues.push("This website has iFrames which has lots of '!important;' values found in it");}
+      }
+
       //Show all issues
       for (item = 0; item < issues.length; item++) {
         $("#issueList").append("<li>"+issues[item]+"</li>");
