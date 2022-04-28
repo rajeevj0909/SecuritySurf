@@ -97,7 +97,6 @@ function checkScore(){
                     if (Object.keys(badResults).length === 0){
                         return(true);
                     }else{
-                        console.log(badResults);
                         return(false);
                     }
                     

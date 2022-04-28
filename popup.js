@@ -36,16 +36,19 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
             })
             .then((data) => {
                 let locationData = data;
-                resolve(locationData.country)
+                resolve(locationData)
                 
             })
             .catch(function(error) {
                 reject(error);
             });
       })
-      const location = await locationData;
-      console.log(location);
-      $("#websiteLocation").text(location);
+      let location = await locationData;
+      let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      let currentCountry = timezones[timezone].c[0];
+      if(currentCountry!=location.countryCode){
+        $("#issueList").append("<li>This website is being delivered from another country:  <b>" +countries[location.countryCode]+"</b></li>");
+      }
     }
     IPGeolocationAPI(hostNameOfURL);
 
@@ -65,10 +68,18 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
               reject(error);
           });
       })
-      const pageData = await WHOISdata;
-      $("#websiteServer").text(pageData.server);
+      let pageData = await WHOISdata;
+      $("#ipUsed").text(pageData.ip);
     }
     URLScanIOAPI(domainOfURL);
+
+    async function showNoIssues(){
+      //If no issues
+      if($('#issueList li').length == 0){
+        $("#issueList").append("<h2>No Issues Found!</h2>");
+      }
+    }
+    //showNoIssues();
 
     //Only run if website is recognisable
     if((protocolOfURL=="https:")||(protocolOfURL=="http:")){
@@ -117,9 +128,6 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       //Show all issues
       for (item = 0; item < issues.length; item++) {
         $("#issueList").append("<li>"+issues[item]+"</li>");
-      }//If not issues
-      if(issues.length==0){
-        $("#issueList").append("<h2>No Issues Found!</h2>");
       }
     } else{
       //Unsupported website
