@@ -22,7 +22,7 @@ chrome.storage.sync.get("extensionOptions", function(result) {
   $("#popupOption").val(popupOption).change();
   $("#TTLValue").val(TTLValue).change();
   for (item = 0; item < whiteList.length; item++) {
-    $("#whiteListLinks").append('<div class="col-lg-12 d-flex flex-row p-1"><li>'+whiteList[item]+'</li><button type="button" class="btn btn-danger" name="linkDiv">X</button></div>');
+    $("#whiteListLinks").append('<div class="col-lg-12 d-flex flex-row p-1"><li>'+whiteList[item]+'</li><button type="button" class="mx-1 btn btn-danger" name="linkDiv">X</button></div>');
   }
 });
 
@@ -31,7 +31,7 @@ $("#addwhiteListButton").click(function(){
   let linkToAdd=$("#addwhiteList").val();
   //Checks validitidy of URL
   if ((linkToAdd)&&(urlChecker(linkToAdd))){
-    $("#whiteListLinks").append('<div class="col-lg-12 d-flex flex-row p-1"><li>'+linkToAdd+'</li><button type="button" class="btn btn-danger" name="linkDiv">X</button></div>');
+    $("#whiteListLinks").append('<div class="col-lg-12 d-flex flex-row p-1"><li>'+linkToAdd+'</li><button type="button" class="mx-1 btn btn-danger" name="linkDiv">X</button></div>');
   }
   $("#addwhiteList").val("");
 });

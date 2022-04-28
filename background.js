@@ -53,3 +53,10 @@ chrome.tabs.onActivated.addListener(function() { //For TESTING <----------------
 //Print all storage & clear storage
 //chrome.storage.sync.get(null, function (data) { console.info(data) });
 //chrome.storage.sync.clear()
+
+/*
+Extension Colours:
+    Dark Blue: #2F4E9D OR rgb(47,78,157)
+    Medium Blue: #2680C3 OR rgb(38,128,195)
+    Light Blue: #29B5CA OR rgb(41,181,202)
+*/

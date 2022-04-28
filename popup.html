@@ -7,6 +7,8 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="assets\bootstrap-4.1.3-dist\css\bootstrap.min.css">
     <script src="assets\bootstrap-4.1.3-dist\js\bootstrap.min.js" defer></script>
+    <!-- Google Material Icons Guide -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     <!-- Public Suffix List -->
     <script type="text/javascript" src="/assets/psl.min.js" defer></script>
 
@@ -18,41 +20,52 @@
     <script type="text/javascript" src="popup.js" defer></script>
   </head>
 
-  <body class="popup_window" style="padding:2%;">
+  <body class="popup_window">
 
     <div id="mainBody">
       <!-- Overall Rating -->
       <div class="col-lg-12 d-flex flex-row statsBox">
-        <img src="/assets/SecuritySurfLogo128.png" alt="Extension Logo" width="80" height="60">
-        <h1 class="text-justify text-center">Security Surf</h1><br><br>
-        <h2>Rating:</h2><h2 id="ratedScore"></h2>        
-      </div>
-      <div class="col-lg-12 d-flex flex-row statsBox">
-        <p><b>Domain Matches:</b></p><p id="domainMatch"></p>
-        <p><b>Secure Hyperlinks:</b></p><p id="secureSites"></p>
-        <p><b>Invalid Hyperlinks:</b></p><p id="invalidSites"></p>
-        <p><b>Network Host:</b></p><p id="asName"></p>
+        <h2>Rating:</h2><h2 class="mr-auto p-2"id="ratedScore"></h2> 
+        <img src="/assets/SecuritySurfLogo128.png" alt="Extension Logo" width="55" height="45">
+        <h2 class="text-justify text-center">Security Surf</h2>
       </div>
 
-      <button id="openOptionsButton" type="button" class="btn btn-primary">Options</button>
-      <button id="saveToWhitelist" type="button" class="btn btn-info">Save website to Whitelist</button>
-      <button id="incognitoMode" type="button" class="btn btn-info">Hide Tracking</button>
-      <button id="reportWebsite" type="button" class="btn btn-danger">Report Website</button>
+      <div class="statsBox m-1">
+        <div class="d-flex justify-content-between m-1 bg-lightBlue rounded text-white">
+          <p><b>Domain Matches:</b></p><p id="domainMatch"></p>
+          <p><b>Secure Hyperlinks:</b></p><p id="secureSites"></p>
+        </div>
+        <div class="d-flex justify-content-between m-1 bg-lightBlue rounded text-white">
+          <p><b>Invalid Hyperlinks:</b></p><p id="invalidSites"></p>
+          <p><b>Network Host:</b></p><p id="asName"></p>
+        </div>
+      </div>
 
-      <select class="form-select" name="chooseInfoBox" id="chooseInfoBox">
-        <option value="websiteIssues">Issues</option>
-        <option value="certInfo">Connection Details</option>
-        <option value="WhoIsInfo">Website Details</option>
-        <option value="trustPilot">Trust Pilot Reviews</option>
-      </select>
-      <button id="helpButton" type="button" class="btn btn-warning">Help</button>
-      <br><br>
+      <div class="m-1 p-1" style="font-variation-settings: 'FILL' 0, 'wght' 100, 'GRAD' 0, 'opsz' 20;">
+        <button id="openOptionsButton" type="button" class="btn btn-primary">Options
+          <span class="material-symbols-outlined">settings</span></button>
+        <button id="saveToWhitelist" type="button" class="btn btn-success">Save website to Whitelist
+          <span class="material-symbols-outlined">bookmark</span></button>
+        <button id="incognitoMode" type="button" class="btn btn-dark">Hide Tracking
+          <span class="material-symbols-outlined">cookies</span></button>
+        <button id="reportWebsite" type="button" class="btn btn-danger">Report Website
+          <span class="material-symbols-outlined">report</span></button>
+        <button id="helpButton" type="button" class="btn btn-warning">Help
+          <span class="material-symbols-outlined">help</span></button>
+
+        <select class="m-1 form-select btn btn-secondary dropdown-toggle" name="chooseInfoBox" id="chooseInfoBox">
+          <option value="websiteIssues">Issues</option>
+          <option value="certInfo">Connection Details</option>
+          <option value="WhoIsInfo">Website Details</option>
+          <option value="trustPilot">Trust Pilot Reviews</option>
+        </select><br><br>
+      </div>
     </div>
 
     <div id="extraInfo">
 
       <!-- Main Page Container -->
-      <div id="mainPageBox">
+      <div id="mainPageBox" class="px-1 py-3 rounded bg-darkBlue text-white">
         <!-- Issues Info -->
         <div id="websiteIssues">
           <h3>Issues</h3>
@@ -65,9 +78,9 @@
             <li>Rating: This is a percentage how safe we find the website based on lots of factors</li>
             <li>Statistics</li>
             <ul>
-              <li>Domain Matches: These are how many hyperlinks found on the website which lead to another website from the same domain</li>
-              <li>Secure Hyperlinks: These are how many hyperlinks found on the website which are secured by SSL</li>
-              <li>Invalid Hyperlinks: These are how many hyperlinks found on the website which are not recognised URLs</li>
+              <li>Domain Matches: Hyperlinks found on the website which lead to another website from the same domain</li>
+              <li>Secure Hyperlinks: Hyperlinks found on the website which are secured by SSL</li>
+              <li>Invalid Hyperlinks: Hyperlinks found on the website which are not recognised URLs</li>
               <li>Network Host: This is the AS (Autonomous System) which owns this domain</li>
             </ul>
             <li>Buttons</li>
@@ -79,18 +92,16 @@
             </ul>
             <li>Dropdown: Find out more details about the website</li>
             <li>Issues: These are some of the things we noticed when we scanned the website.</li>
-            
           </ul>
-
         </div>
       </div>
       
       <!-- Certificate Info -->
-      <div id="certInfo">
+      <div id="certInfo" class="p-2 rounded bg-darkBlue text-white">
         <h3>Connection Details</h3>
         <p>Certification information, find out if your connection encrypted using SSL and more.</p>
-        <button id="learnAboutCertificatesButton" type="button" class="btn btn-info">Learn more</button>
-        <iframe id="certiciateInfoIFrame" loading="lazy" class="iFramePopup embed-responsive embed-responsive-16by9">
+        <button id="learnAboutCertificatesButton" type="button" class="btn btn-info mb-2">Learn more</button>
+        <iframe id="certiciateInfoIFrame" loading="lazy" class="w-90 embed-responsive embed-responsive-16by9">
           Your browser doesn't support iframes
         </iframe><br><br>
         <ul id="learnAboutCertificates" class="hidden">
@@ -124,11 +135,11 @@
       </div>
 
       <!-- WHOIS Info -->
-      <div id="WhoIsInfo">
+      <div id="WhoIsInfo" class="p-2 rounded bg-darkBlue text-white">
         <h3>Website Details</h3>
         <p>WHOIS information, take a look the website's hosting information and more.</p>
-        <button id="learnAboutWHOISButton" type="button" class="btn btn-info">Learn more</button>
-        <iframe id="whoIsIFrame" loading="lazy" class="iFramePopup embed-responsive embed-responsive-16by9">
+        <button id="learnAboutWHOISButton" type="button" class="btn btn-info mb-2">Learn more</button>
+        <iframe id="whoIsIFrame" loading="lazy" class="w-90 embed-responsive embed-responsive-16by9">
           Your browser doesn't support iframes
         </iframe><br><br>
         <ul id="learnAboutWHOIS" class="hidden">
@@ -158,11 +169,11 @@
       </div>
 
       <!-- Trust Pilot Info -->
-      <div id="trustPilot">
+      <div id="trustPilot" class="m-2 p-2 rounded bg-darkBlue text-white">
         <h3>Trust Pilot Reviews</h3>
         <p>Take this with a pinch of salt, these opinions are written by anyone!</p>
-        <button id="learnAboutTrustPilotButton" type="button" class="btn btn-info">Learn more</button>
-        <iframe id="trustPilotIFrame" loading="lazy" class="iFramePopup embed-responsive embed-responsive-16by9">
+        <button id="learnAboutTrustPilotButton" type="button" class="btn btn-info mb-2">Learn more</button>
+        <iframe id="trustPilotIFrame" loading="lazy" class="w-90 embed-responsive embed-responsive-16by9">
           Your browser doesn't support iframes
         </iframe><br><br>
         <ul id="learnAboutTrustPilot" class="hidden">

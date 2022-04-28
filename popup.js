@@ -24,6 +24,8 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       if (this.value=="websiteIssues"){
         $("#mainPageBox").show(500);
         $("#explainPopup").hide();
+      }else{
+        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
       }
     });
 
@@ -93,7 +95,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       }//If data hasn't been loaded
       catch(err) {
         $("body").empty();
-        $("body").append("<h1 class='text-justify text-center'>Refresh the page</h1>")
+        $("body").append("<h1 class='text-justify text-center'>Refresh the page</h1><p class='text-center'>If you keep seeing this message, this website may be on your whitelist.</p><p class='text-center'>Visit the extension options if you think this is a mistake.</p>");
         //chrome.tabs.reload(tabs[0].id);
       }
       //Present Data
@@ -172,7 +174,8 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         $("#chooseInfoBox").val("websiteIssues").change();
         $("#websiteIssues").hide();
         $("#explainPopup").show(1000);
-      }     
+      }//Scroll to bottom
+      $("html, body").animate({ scrollTop: $(document).height() }, "slow");
     });
 
     //Learn more button hides the iFrame and gives them a lesson in cyber security
@@ -191,4 +194,3 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 
   });
 });
-
