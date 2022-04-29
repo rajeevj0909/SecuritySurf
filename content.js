@@ -179,6 +179,8 @@ function checkScore(){
 
         //Listens for popup request of data
         function storeWebsiteInfo(websiteScore,urlHost,websiteSSL,hyperlinkInfo,isWebsiteSafe,suspiciousIframes){
+            //Set Icon Colour traffic light
+            chrome.runtime.sendMessage({"urlHost": urlHost, "score":score});
             chrome.storage.sync.get("websitesVisited", function(websiteResults){ 
                 let oldResults = websiteResults.websitesVisited;
                 oldResults[urlHost]={"score":websiteScore, "TTL":Date.now() , "websiteSSL":websiteSSL, "hyperlinkInfo":hyperlinkInfo, "isWebsiteSafe":isWebsiteSafe, "suspiciousIframes":suspiciousIframes};
@@ -191,13 +193,18 @@ function checkScore(){
 
 //Checks whitelist and storage before checking score
 chrome.storage.sync.get(null, function (data) {
+                        console.log(data);//For TESTING <-----------------------------------
     let allWebsites =  data.websitesVisited;
     let whiteList= data.extensionOptions.whiteList;
     //If the website visited is not on the whitelist
     //And if the website visited has not already been score before
     if ((!whiteList.includes(window.location.hostname)) && (!allWebsites.hasOwnProperty(window.location.hostname))){
         checkScore();
-    }//If a file is being uploaded to this website, run another security check for good measure
+    }//If website already visited before, give icon traffic light colour
+    else if(allWebsites.hasOwnProperty(window.location.hostname)){
+        chrome.runtime.sendMessage({"urlHost": window.location.hostname, "score":allWebsites[window.location.hostname].score});
+    }    
+    //If a file is being uploaded to this website, run another security check for good measure
     //document.getElementByType('input').on('change', function(){checkScore();})
 });
 

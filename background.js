@@ -3,6 +3,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
     let expertiseChosen= "beginner";
     let popupOption= "yes";
     let TTLValue= "86400000";//1 Day in Milliseconds
+            //TTLValue= "120000";//120 Seconds for TESTING <-----------------------------------
     let whiteList = ["www.google.com"];
     let extensionOptions={
         "expertiseChosen":expertiseChosen,
@@ -25,7 +26,8 @@ chrome.runtime.onInstalled.addListener(function(details) {
 });
 
 //Cleans up links that have a set TTL 
-chrome.windows.onCreated.addListener(function() { //For production
+chrome.tabs.onActivated.addListener(function() { //For TESTING <-----------------------------------
+//chrome.windows.onCreated.addListener(function() { //For production
     chrome.storage.sync.get(null, function (data) {
         let chosenTTL= data.extensionOptions.TTLValue;
         let allWebsites =  data.websitesVisited;
@@ -47,6 +49,35 @@ chrome.windows.onCreated.addListener(function() { //For production
         }
     });
 });
+
+//Change Icon depending on website score
+chrome.runtime.onMessage.addListener(
+    function(request, sender) {
+        let iconText="⬜";
+        //Green Light
+        if (request.score>75){
+            chrome.action.setBadgeText( { text: iconText, tabId:sender.tab.id } );
+            chrome.action.setBadgeBackgroundColor({color: '#0FFF50', tabId:sender.tab.id});
+            //chrome.action.setIcon({path:"/assets/trafficLights/SecuritySurfLogo128Green.png",tabId:sender.tab.id});
+        }//Amber Light
+        else if (request.score>35){
+            chrome.action.setBadgeText( { text: iconText, tabId:sender.tab.id } );
+            chrome.action.setBadgeBackgroundColor({color: '#F9AF12', tabId:sender.tab.id});
+            //chrome.action.setIcon({path:"/assets/trafficLights/SecuritySurfLogo128Amber.png",tabId:sender.tab.id});
+        }//Red Light
+        else if (request.score<=35){
+            chrome.action.setBadgeText( { text: iconText, tabId:sender.tab.id } );
+            chrome.action.setBadgeBackgroundColor({color: '#FF3131', tabId:sender.tab.id});
+            //chrome.action.setIcon({path:"/assets/trafficLights/SecuritySurfLogo128Red.png",tabId:sender.tab.id});
+        }//New website has no score, default image
+        else{
+            chrome.action.setBadgeText( { text: "", tabId:sender.tab.id } );
+            chrome.action.setBadgeBackgroundColor({color: '#2f2f2f', tabId:sender.tab.id});
+            //chrome.action.setIcon({path:"/assets/SecuritySurfLogo128.png",tabId:sender.tab.id});
+        }
+        return(true);
+    }
+);
 
 //Print all storage & clear storage
 //chrome.storage.sync.get(null, function (data) { console.info(data) });
