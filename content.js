@@ -15,7 +15,7 @@ function checkScore(){
         }return (safeWebsite)
     }
     
-    if((urlProtocol="https:")||(urlProtocol="http:")){
+    if((urlProtocol=="https:")||(urlProtocol=="http:")){
         //Check for SSL certificate
         function checkSSL(score, urlProtocol){
             let SSLused="N/A";
@@ -23,7 +23,7 @@ function checkScore(){
                 score+=60;
                 SSLused="true";
             }else if (urlProtocol=="http:"){ 
-                score+=0;
+                score+=20;
                 SSLused="false";
             }
             return [score, SSLused];
