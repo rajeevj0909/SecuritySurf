@@ -30,12 +30,13 @@ function checkScore(){
         }
         [score, SSLused] = checkSSL(score, urlProtocol);
 
-        //Get all the links the website points to
+        //Gets the information about the hyperlinks on the site
         function hyperlinkChecks(urlHost){
             let allLinks=[]
             let hostNameMatch=0;
             let secureSSLMatch=document.links.length;
             let falseWebsites=0;
+            //Loops through each hyperlink on webpage
             for(var linkIndex=0; linkIndex<document.links.length; linkIndex++) {
                 let link=document.links[linkIndex].href;
                 allLinks.push(link);
@@ -81,8 +82,8 @@ function checkScore(){
             } //Set max value globally
             if (suspiciousIframes<countIframes){
                 suspiciousIframes=countIframes;
-            }//If there are more than 1 suspcious iframe, set the score to 0
-            if (suspiciousIframes>1){
+            }//If there is atleast 1 suspicious Iframe, set the score to 0
+            if (suspiciousIframes){
                 score=0;
                 storeWebsiteInfo(score,urlHost,SSLused,hyperlinkInfo,isWebsiteSafe,suspiciousIframes);
             }
@@ -183,7 +184,14 @@ function checkScore(){
             chrome.runtime.sendMessage({"urlHost": urlHost, "score":score});
             chrome.storage.sync.get("websitesVisited", function(websiteResults){ 
                 let oldResults = websiteResults.websitesVisited;
-                oldResults[urlHost]={"score":websiteScore, "TTL":Date.now() , "websiteSSL":websiteSSL, "hyperlinkInfo":hyperlinkInfo, "isWebsiteSafe":isWebsiteSafe, "suspiciousIframes":suspiciousIframes};
+                oldResults[urlHost]={
+                    "score":websiteScore, 
+                    "TTL":Date.now() , 
+                    "websiteSSL":websiteSSL, 
+                    "hyperlinkInfo":hyperlinkInfo, 
+                    "isWebsiteSafe":isWebsiteSafe, 
+                    "suspiciousIframes":suspiciousIframes
+                };
                 chrome.storage.sync.set({"websitesVisited": oldResults});
             });
         }

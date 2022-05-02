@@ -34,8 +34,8 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       //IPGeolocationAPI Call
       async function IPGeolocationAPI(url){
         let locationData = new Promise ((resolve, reject) => {
-          let websiteWithKey='http://ip-api.com/json/'+url;
-          fetch(websiteWithKey)
+          let websiteCall='http://ip-api.com/json/'+url;
+          fetch(websiteCall)
               .then((response) => {
                   return response.json();
               })
@@ -64,8 +64,8 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       //URLScanIOAPI Call
       async function URLScanIOAPI(url){
         let WHOISdata = new Promise ((resolve, reject) => {
-        let websiteWithKey='https://urlscan.io/api/v1/search/?q='+url;
-        fetch(websiteWithKey)
+        let websiteCall='https://urlscan.io/api/v1/search/?q='+url;
+        fetch(websiteCall)
             .then((response) => {
                 return response.json();
             })
@@ -94,11 +94,11 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         $("#invalidSites").text(websiteData.hyperlinkInfo.falseWebsites);
 
         //Display iFrames for given URL
-        certificateURL="https://sitereport.netcraft.com/?url="+urlOfWebsite+"#ssl_table_section";
+        let certificateURL="https://sitereport.netcraft.com/?url="+urlOfWebsite+"#ssl_table_section";
         $("#certiciateInfoIFrame").attr("src",certificateURL);
-        whoIsURL="https://www.whois.com/whois/"+hostNameOfURL;
+        let whoIsURL="https://www.whois.com/whois/"+hostNameOfURL;
         $("#whoIsIFrame").attr("src",whoIsURL);
-        trustPilotURL="https://www.trustpilot.com/review/"+hostNameOfURL;
+        let trustPilotURL="https://www.trustpilot.com/review/"+hostNameOfURL;
         $("#trustPilotIFrame").attr("src",trustPilotURL);
 
         //No SSL Message
@@ -137,7 +137,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         $("body").append('<h1 class="text-justify text-center">Unrecognised Website</h1>');
       }
 
-      //Save button adds site to whitelist
+      //Button opens options page
       $("#openOptionsButton").click(function(){
         chrome.tabs.create({ 'url':'chrome-extension://'+chrome.runtime.id+"/options.html"});
       });
@@ -154,12 +154,12 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         alert("Added!")
       });
 
-      //Save button adds site to whitelist
+      //Button opens incognito page
       $("#incognitoMode").click(function(){
         chrome.windows.create({ "incognito": true, 'url': urlOfWebsite});
       });
       
-      //Save button adds site to whitelist
+      //Button opens report page
       $("#reportWebsite").click(function(){
         chrome.tabs.create({ 'url': 'https://www.ncsc.gov.uk/section/about-this-website/report-scam-website'});
       });

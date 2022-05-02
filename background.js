@@ -38,7 +38,7 @@ chrome.tabs.onActivated.addListener(function() { //For TESTING <----------------
                 //Calculate Time Range
                 let timeRange= Date.now()-website.TTL;
                 //If it's been longer than the user sets, remove from storage
-                if (timeRange>chosenTTL){//false
+                if (timeRange>chosenTTL){
                     delete allWebsites[websiteURL];
                 }
             }
