@@ -97,7 +97,7 @@ function checkScore(){
                 {
                     "client": {
                     "clientId":      "securitysurf",
-                    "clientVersion": "1.1"
+                    "clientVersion": "1.2"
                     },
                     "threatInfo": {
                     "threatTypes":      ["THREAT_TYPE_UNSPECIFIED", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],
@@ -201,7 +201,6 @@ function checkScore(){
 
 //Checks whitelist and storage before checking score
 chrome.storage.sync.get(null, function (data) {
-                        console.log(data);//For TESTING <-----------------------------------
     let allWebsites =  data.websitesVisited;
     let whiteList= data.extensionOptions.whiteList;
     //If the website visited is not on the whitelist

@@ -1,7 +1,7 @@
 {
     "name": "Security Surf",
     "description": "Raising awareness of dangerous websites as you surf across the internet.",
-    "version": "1.1",
+    "version": "1.2",
     "manifest_version": 3,
     "permissions": ["storage", "activeTab"],
     "options_page": "options.html",
